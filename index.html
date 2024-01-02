@@ -61,6 +61,12 @@ const boardId = '58e8964f1c3d23a2f251e15a';
             }
 
             boardData.lists.forEach(list => {
+                // Skip closed (archived) lists
+                if (list.closed) {
+                    console.log(`List ${list.name} is closed. Skipping...`);
+                    return;
+                }
+
                 const listContainer = document.createElement('div');
                 listContainer.className = 'list';
                 listContainer.setAttribute('id', list.id);
