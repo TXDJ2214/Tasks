@@ -4,73 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trello Boards Viewer</title>
+    <title>Trello Board Viewer</title>
 </head>
 <body>
-    <h1>Trellox Boards Viewer</h1>
-    <div id="boards-container"></div>
+    <h1>Trello Board Viewer</h1>
+    <div id="board-container"></div>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         const apiKey = '7d14288264ab0bf23e34850a66e9528e';
         const apiToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+        const boardId = '58e8964f1c3d23a2f251e15a';
 
         $(document).ready(() => {
-            // Get boards from Trello
+            // Get cards from Trello board
             $.ajax({
-                url: `https://api.trello.com/1/members/me/boards`,
+                url: `https://api.trello.com/1/boards/${boardId}/cards`,
                 type: 'GET',
                 data: {
                     key: apiKey,
                     token: apiToken
                 },
-                success: (boards) => {
-                    const boardsContainer = $('#boards-container');
+                success: (cards) => {
+                    const boardContainer = $('#board-container');
 
-                    // Iterate through each board
-                    boards.forEach((board) => {
-                        boardsContainer.append(`<h2>${board.name}</h2>`);
-
-                        // Get lists for each board
-                        $.ajax({
-                            url: `https://api.trello.com/1/boards/${board.id}/lists`,
-                            type: 'GET',
-                            data: {
-                                key: apiKey,
-                                token: apiToken
-                            },
-                            success: (lists) => {
-                                // Iterate through each list
-                                lists.forEach((list) => {
-                                    // Get cards for each list
-                                    $.ajax({
-                                        url: `https://api.trello.com/1/lists/${list.id}/cards`,
-                                        type: 'GET',
-                                        data: {
-                                            key: apiKey,
-                                            token: apiToken
-                                        },
-                                        success: (cards) => {
-                                            // Display list and cards
-                                            boardsContainer.append(`<h3>${list.name}</h3>`);
-                                            cards.forEach((card) => {
-                                                boardsContainer.append(`<p>${card.name}</p>`);
-                                            });
-                                        },
-                                        error: (error) => {
-                                            console.error('Error fetching cards:', error);
-                                        }
-                                    });
-                                });
-                            },
-                            error: (error) => {
-                                console.error('Error fetching lists:', error);
-                            }
-                        });
+                    // Display cards
+                    cards.forEach((card) => {
+                        boardContainer.append(`<p>${card.name}</p>`);
                     });
                 },
                 error: (error) => {
-                    console.error('Error fetching boards:', error);
+                    console.error('Error fetching cards:', error);
                 }
             });
         });
