@@ -1,6 +1,6 @@
 const apiKey = '7d14288264ab0bf23e34850a66e9528e';
 const token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-const boardId = '58e8964f1c3d23a2f251e15a';
+const boardId = 'tyy58e8964f1c3d23a2f251e15a';
 
 function loadTrelloBoard() {
     $.ajax({
