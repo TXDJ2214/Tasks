@@ -1,76 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trello Board Viewer2</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-    .board-container {
-      display: flex;
-      overflow-x: auto;
-      padding: 20px;
-    }
-    .list {
-      background-color: #fff;
-      border-radius: 5px;
-      margin-right: 20px;
-      padding: 10px;
-      width: 300px;
-    }
-    .card {
-      background-color: #eee;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      padding: 10px;
-      cursor: grab;
-    }
-  </style>
-</head>
-<body>
-  <div class="board-container" id="board-container"></div>
+import requests
 
-  <script>
-    const apiKey = '7d14288264ab0bf23e34850a66e9528e';
-       const token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-const boardId = '58e8964f1c3d23a2f251e15a';
+# Trello API key and token
+api_key = 'your_trello_api_key'
+api_token = 'your_trello_api_token'
 
-    async function loadBoard() {
-      const listsResponse = await fetch(`https://api.trello.com/1/boards/${boardId}/lists?key=${apiKey}&token=${token}`);
-      const lists = await listsResponse.json();
+# Board and list ID
+board_id = 'your_board_id'
+list_id = 'your_list_id'
 
-      const boardContainer = document.getElementById('board-container');
+# Trello API endpoint for cards in a list
+url = f'https://api.trello.com/1/lists/{list_id}/cards'
 
-      lists.forEach(async (list) => {
-        const cardsResponse = await fetch(`https://api.trello.com/1/lists/${list.id}/cards?key=${apiKey}&token=${token}`);
-        const cards = await cardsResponse.json();
+# Parameters including API key and token
+params = {
+    'key': api_key,
+    'token': api_token
+}
 
-        const listElement = document.createElement('div');
-        listElement.classList.add('list');
-        listElement.innerHTML = `<h2>${list.name}</h2>`;
+# Make a GET request to retrieve cards
+response = requests.get(url, params=params)
 
-        cards.forEach(card => {
-          const cardElement = document.createElement('div');
-          cardElement.classList.add('card');
-          cardElement.setAttribute('draggable', true);
-          cardElement.innerHTML = `<p>${card.name}</p>`;
-          listElement.appendChild(cardElement);
-
-          cardElement.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', card.id);
-          });
-        });
-
-        boardContainer.appendChild(listElement);
-      });
-    }
-
-    loadBoard();
-  </script>
-</body>
-</html>
+# Check if the request was successful
+if response.status_code == 200:
+    # Print or process the cards
+    cards = response.json()
+    for card in cards:
+        print(card['name'])
+else:
+    print(f"Error: {response.status_code}")
