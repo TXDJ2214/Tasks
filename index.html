@@ -4,29 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auto Archive Trello Cards</title> </head> <body>
-
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         archiveCards();
     });
-
     function archiveCards() {
         // Trello API key and token
         var api_key = '7d14288264ab0bf23e34850a66e9528e';
         var api_token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-
-        // Board and list ID
         var list_id = '638df276517409004ab4ca3a';
-
-        // Trello API endpoint for cards in a list
         var url = `https://api.trello.com/1/lists/${list_id}/archiveAllCards`;
-
         // Parameters including API key and token
         var params = {
             key: api_key,
             token: api_token
         };
-
         // Make a POST request to archive all cards
         fetch(url, {
             method: 'POST',
@@ -44,6 +36,5 @@
         });
     }
 </script>
-
 </body>
 </html>
