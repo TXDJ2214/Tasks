@@ -1,30 +1,49 @@
-import requests
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Archive Trello Cards</title> </head> <body>
 
-# Trello API key and token
-api_key = '7d14288264ab0bf23e34850a66e9528e'
-api_token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69'
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        archiveCards();
+    });
 
-# Board and list ID
-board_id = '58e8964f1c3d23a2f251e15a'
-list_id = '638df276517409004ab4ca3a'
+    function archiveCards() {
+        // Trello API key and token
+        var api_key = '7d14288264ab0bf23e34850a66e9528e';
+        var api_token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
 
-# Trello API endpoint for cards in a list
-url = f'https://api.trello.com/1/lists/{list_id}/cards'
+        // Board and list ID
+        var list_id = '638df276517409004ab4ca3a';
 
-# Parameters including API key and token
-params = {
-    'key': api_key,
-    'token': api_token
-}
+        // Trello API endpoint for cards in a list
+        var url = `https://api.trello.com/1/lists/${list_id}/archiveAllCards`;
 
-# Make a GET request to retrieve cards
-response = requests.get(url, params=params)
+        // Parameters including API key and token
+        var params = {
+            key: api_key,
+            token: api_token
+        };
 
-# Check if the request was successful
-if response.status_code == 200:
-    # Print or process the cards
-    cards = response.json()
-    for card in cards:
-        print(card['name'])
-else:
-    print(f"Error: {response.status_code}")
+        // Make a POST request to archive all cards
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Cards archived successfully:', data);
+        })
+        .catch(error => {
+            console.error('Error archiving cards:', error);
+        });
+    }
+</script>
+
+</body>
+</html>
