@@ -1,162 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trello Board Viewer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .list {
-            width: 200px;
-            padding: 10px;
-            background-color: #f4f4f4;
-            border-radius: 5px;
-        }
-
-        .card {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            padding: 5px;
-            cursor: grab;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trello Board Viewer2</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .board-container {
+      display: flex;
+      overflow-x: auto;
+      padding: 20px;
+    }
+    .list {
+      background-color: #fff;
+      border-radius: 5px;
+      margin-right: 20px;
+      padding: 10px;
+      width: 300px;
+    }
+    .card {
+      background-color: #eee;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      padding: 10px;
+      cursor: grab;
+    }
+  </style>
 </head>
 <body>
-    <div id="app"></div>
+  <div class="board-container" id="board-container"></div>
 
-    <script>
-        // Replace with your Trello API key and token
-        
-const apiKey = '7d14288264ab0bf23e34850a66e9528e';
+  <script>
+    const apiKey = '7d14288264ab0bf23e34850a66e9528e';
        const token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
 const boardId = '58e8964f1c3d23a2f251e15a';
 
-        async function fetchTrelloData() {
-            try {
-                const response = await fetch(`https://api.trello.com/1/boards/${boardId}?key=${apiKey}&token=${token}&cards=all&lists=all`);
-                const data = await response.json();
-                return data;
-            } catch (error) {
-                console.error('Error fetching Trello data:', error);
-                return null;
-            }
-        }
+    async function loadBoard() {
+      const listsResponse = await fetch(`https://api.trello.com/1/boards/${boardId}/lists?key=${apiKey}&token=${token}`);
+      const lists = await listsResponse.json();
 
-        function renderBoard(boardData) {
-            const app = document.getElementById('app');
+      const boardContainer = document.getElementById('board-container');
 
-            if (!boardData || !boardData.lists) {
-                console.error('Invalid Trello board data:', boardData);
-                return;
-            }
+      lists.forEach(async (list) => {
+        const cardsResponse = await fetch(`https://api.trello.com/1/lists/${list.id}/cards?key=${apiKey}&token=${token}`);
+        const cards = await cardsResponse.json();
 
-            boardData.lists.forEach(list => {
-                // Skip closed (archived) lists
-                if (list.closed) {
-                    console.log(`List ${list.name} is closed. Skipping...`);
-                    return;
-                }
+        const listElement = document.createElement('div');
+        listElement.classList.add('list');
+        listElement.innerHTML = `<h2>${list.name}</h2>`;
 
-                const listContainer = document.createElement('div');
-                listContainer.className = 'list';
-                listContainer.setAttribute('id', list.id);
+        cards.forEach(card => {
+          const cardElement = document.createElement('div');
+          cardElement.classList.add('card');
+          cardElement.setAttribute('draggable', true);
+          cardElement.innerHTML = `<p>${card.name}</p>`;
+          listElement.appendChild(cardElement);
 
-                if (list.cards && list.cards.length > 0) {
-                    list.cards.forEach(card => {
-                        const cardElement = document.createElement('div');
-                        cardElement.className = 'card';
-                        cardElement.textContent = card.name;
+          cardElement.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', card.id);
+          });
+        });
 
-                        // Make the card draggable
-                        cardElement.draggable = true;
+        boardContainer.appendChild(listElement);
+      });
+    }
 
-                        // Add touch events for iOS
-                        cardElement.addEventListener('touchstart', touchStart);
-                        cardElement.addEventListener('touchmove', touchMove);
-                        cardElement.addEventListener('touchend', touchEnd);
-
-                        listContainer.appendChild(cardElement);
-                    });
-                } else {
-                    console.warn(`List ${list.name} has no cards.`);
-                }
-
-                app.appendChild(listContainer);
-            });
-
-            // Enable drag-and-drop functionality
-            enableDragAndDrop();
-        }
-
-        function enableDragAndDrop() {
-            const cards = document.querySelectorAll('.card');
-
-            cards.forEach(card => {
-                card.addEventListener('dragstart', (event) => {
-                    event.dataTransfer.setData('text/plain', card.parentElement.id);
-                });
-
-                card.addEventListener('dragover', (event) => {
-                    event.preventDefault();
-                });
-
-                card.addEventListener('drop', (event) => {
-                    event.preventDefault();
-                    const sourceListId = event.dataTransfer.getData('text/plain');
-                    const targetListId = card.parentElement.id;
-
-                    // Handle the logic to update Trello board here
-                    console.log(`Move card from list ${sourceListId} to list ${targetListId}`);
-                });
-            });
-        }
-
-        // Touch events for iOS
-        let touchId = null;
-
-        function touchStart(event) {
-            touchId = event.targetTouches[0].identifier;
-        }
-
-        function touchMove(event) {
-            if (touchId !== null) {
-                event.preventDefault();
-                const touch = Array.from(event.changedTouches).find(t => t.identifier === touchId);
-                if (touch) {
-                    // Your drag logic here
-                    // You may need to calculate the movement and update the card position accordingly
-                }
-            }
-        }
-
-        function touchEnd(event) {
-            if (touchId !== null) {
-                touchId = null;
-            }
-        }
-
-        async function init() {
-            try {
-                const boardData = await fetchTrelloData();
-                if (boardData) {
-                    renderBoard(boardData);
-                }
-            } catch (error) {
-                console.error('Error initializing Trello board:', error);
-            }
-        }
-
-        init();
-    </script>
+    loadBoard();
+  </script>
 </body>
 </html>
