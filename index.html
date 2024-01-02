@@ -62,6 +62,11 @@
                     // Make the card draggable
                     cardElement.draggable = true;
 
+                    // Add touch events for iOS
+                    cardElement.addEventListener('touchstart', touchStart);
+                    cardElement.addEventListener('touchmove', touchMove);
+                    cardElement.addEventListener('touchend', touchEnd);
+
                     listContainer.appendChild(cardElement);
                 });
 
@@ -93,6 +98,30 @@
                     console.log(`Move card from list ${sourceListId} to list ${targetListId}`);
                 });
             });
+        }
+
+        // Touch events for iOS
+        let touchId = null;
+
+        function touchStart(event) {
+            touchId = event.targetTouches[0].identifier;
+        }
+
+        function touchMove(event) {
+            if (touchId !== null) {
+                event.preventDefault();
+                const touch = Array.from(event.changedTouches).find(t => t.identifier === touchId);
+                if (touch) {
+                    // Your drag logic here
+                    // You may need to calculate the movement and update the card position accordingly
+                }
+            }
+        }
+
+        function touchEnd(event) {
+            if (touchId !== null) {
+                touchId = null;
+            }
         }
 
         async function init() {
