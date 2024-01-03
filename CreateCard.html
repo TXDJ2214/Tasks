@@ -32,10 +32,12 @@
     </div>
 
     <script>
-        // Additional check to focus on the textbox for iOS Safari
+        // Additional check and delay for iOS Safari
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         if (isIOS) {
-            document.getElementById('textbox').focus();
+            setTimeout(() => {
+                document.getElementById('textbox').focus();
+            }, 500); // Adjust the delay as needed
         }
     </script>
 </body>
