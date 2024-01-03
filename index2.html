@@ -21,6 +21,10 @@
         <div id="numberRadios">
             <!-- JavaScript will populate the numbers dynamically -->
         </div>
+        <p>Select name:</p>
+        <div id="nameRadios">
+            <!-- JavaScript will populate the names dynamically -->
+        </div>
     </div>
 
     <script>
@@ -59,7 +63,12 @@
             for (let i = 0; i < 7; i++) {
                 const date = new Date();
                 date.setDate(date.getDate() + i);
-                const formattedDate = date.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+                
+                const dayOfWeek = date.toLocaleString('en', { weekday: 'short' });
+                const day = date.getDate();
+                const month = date.toLocaleString('en', { month: 'short' });
+
+                const formattedDate = `${dayOfWeek} ${day} ${month}`;
 
                 const radioBtn = document.createElement('input');
                 radioBtn.type = 'radio';
@@ -83,19 +92,21 @@
         function generateNumberButtons() {
             const numberContainer = document.getElementById('numberRadios');
             
-            for (let i = 1; i <= 7; i++) {
+            const numbers = ['Tom', 'John', 'Ron', 'Sam', 'Bene', 'Luis', 'Paul'];
+
+            for (let i = 0; i < numbers.length; i++) {
                 const radioBtn = document.createElement('input');
                 radioBtn.type = 'radio';
                 radioBtn.name = 'number';
-                radioBtn.id = `number${i}`;
-                radioBtn.value = i;
+                radioBtn.id = `number${i + 1}`;
+                radioBtn.value = numbers[i];
                 radioBtn.addEventListener('click', function() {
-                    appendNumber(i);
+                    appendNumber(numbers[i]);
                 });
 
                 const label = document.createElement('label');
-                label.htmlFor = `number${i}`;
-                label.textContent = i;
+                label.htmlFor = `number${i + 1}`;
+                label.textContent = numbers[i];
 
                 numberContainer.appendChild(radioBtn);
                 numberContainer.appendChild(label);
@@ -104,18 +115,17 @@
 
         function appendDate(date) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${date} - ${cardNameInput.value.replace(/^[^]*?- /, '')}`;
+            cardNameInput.value = `${cardNameInput.value} ${date}`;
         }
 
         function appendNumber(number) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${number} - ${cardNameInput.value.replace(/^[^]*?- /, '')}`;
+            cardNameInput.value = `${number} ${cardNameInput.value}`;
         }
 
-        // Call the functions to generate date and number buttons on page load
+        // Call the functions to generate date, number, and name buttons on page load
         generateDateButtons();
         generateNumberButtons();
     </script>
 </body>
-</html> 
-
+</html>
