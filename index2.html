@@ -13,62 +13,25 @@
     </div>
 
     <div>
-        <input type="radio" name="day" id="sunday" value="Sunday" onclick="appendDay('Sunday')">
-        <label for="sunday">Sunday</label>
-
-        <input type="radio" name="day" id="monday" value="Monday" onclick="appendDay('Monday')">
-        <label for="monday">Monday</label>
-
-        <input type="radio" name="day" id="tuesday" value="Tuesday" onclick="appendDay('Tuesday')">
-        <label for="tuesday">Tuesday</label>
-
-        <input type="radio" name="day" id="wednesday" value="Wednesday" onclick="appendDay('Wednesday')">
-        <label for="wednesday">Wednesday</label>
-
-        <input type="radio" name="day" id="thursday" value="Thursday" onclick="appendDay('Thursday')">
-        <label for="thursday">Thursday</label>
-
-        <input type="radio" name="day" id="friday" value="Friday" onclick="appendDay('Friday')">
-        <label for="friday">Friday</label>
-
-        <input type="radio" name="day" id="saturday" value="Saturday" onclick="appendDay('Saturday')">
-        <label for="saturday">Saturday</label>
+        <p>Select date:</p>
+        <div id="dateRadios">
+            <!-- JavaScript will populate the dates dynamically -->
+        </div>
+        <p>Select number:</p>
+        <div id="numberRadios">
+            <!-- JavaScript will populate the numbers dynamically -->
+        </div>
     </div>
 
-    <div>
-        <input type="radio" name="day" id="sunday" value="Sunday" onclick="appendDay('Sunday')">
-        <label for="sunday">Sunday</label>
-
-        <input type="radio" name="day" id="monday" value="Monday" onclick="appendDay('Monday')">
-        <label for="monday">Monday</label>
-
-        <input type="radio" name="day" id="tuesday" value="Tuesday" onclick="appendDay('Tuesday')">
-        <label for="tuesday">Tuesday</label>
-
-        <input type="radio" name="day" id="wednesday" value="Wednesday" onclick="appendDay('Wednesday')">
-        <label for="wednesday">Wednesday</label>
-
-        <input type="radio" name="day" id="thursday" value="Thursday" onclick="appendDay('Thursday')">
-        <label for="thursday">Thursday</label>
-
-        <input type="radio" name="day" id="friday" value="Friday" onclick="appendDay('Friday')">
-        <label for="friday">Friday</label>
-
-        <input type="radio" name="day" id="saturday" value="Saturday" onclick="appendDay('Saturday')">
-        <label for="saturday">Saturday</label>
-    </div>
-
-    
     <script>
         function createTrelloCard() {
             const cardName = document.getElementById('cardName').value;
 
             // Replace these placeholders with your actual Trello API key, token, board ID, and list ID
-             const apiKey = '7d14288264ab0bf23e34850a66e9528e';
-           const apiToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-           const boardId = '58e8964f1c3d23a2f251e15a';
-           const listId = '638df276517409004ab4ca3a';
-
+        const apiKey = '7d14288264ab0bf23e34850a66e9528e';
+        const apiToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+        const boardId = '58e8964f1c3d23a2f251e15a';
+        const listId = '638df276517409004ab4ca3a';
 
             // Trello API endpoint for creating a card
             const apiUrl = `https://api.trello.com/1/cards?key=${apiKey}&token=${apiToken}&name=${cardName}&idList=${listId}`;
@@ -89,10 +52,70 @@
             });
         }
 
-        function appendDay(day) {
-            const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${day} - ${cardNameInput.value}`;
+        // Dynamically generate dates for radio buttons
+        function generateDateButtons() {
+            const dateContainer = document.getElementById('dateRadios');
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                const formattedDate = date.toISOString().split('T')[0]; // Get YYYY-MM-DD format
+
+                const radioBtn = document.createElement('input');
+                radioBtn.type = 'radio';
+                radioBtn.name = 'date';
+                radioBtn.id = formattedDate;
+                radioBtn.value = formattedDate;
+                radioBtn.addEventListener('click', function() {
+                    appendDate(formattedDate);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = formattedDate;
+                label.textContent = formattedDate;
+
+                dateContainer.appendChild(radioBtn);
+                dateContainer.appendChild(label);
+            }
         }
+
+        // Dynamically generate numbers for radio buttons
+        function generateNumberButtons() {
+            const numberContainer = document.getElementById('numberRadios');
+            
+            for (let i = 1; i <= 7; i++) {
+                const radioBtn = document.createElement('input');
+                radioBtn.type = 'radio';
+                radioBtn.name = 'number';
+                radioBtn.id = `number${i}`;
+                radioBtn.value = i;
+                radioBtn.addEventListener('click', function() {
+                    appendNumber(i);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `number${i}`;
+                label.textContent = i;
+
+                numberContainer.appendChild(radioBtn);
+                numberContainer.appendChild(label);
+            }
+        }
+
+        function appendDate(date) {
+            const cardNameInput = document.getElementById('cardName');
+            cardNameInput.value = `${date} - ${cardNameInput.value.replace(/^[^]*?- /, '')}`;
+        }
+
+        function appendNumber(number) {
+            const cardNameInput = document.getElementById('cardName');
+            cardNameInput.value = `${number} - ${cardNameInput.value.replace(/^[^]*?- /, '')}`;
+        }
+
+        // Call the functions to generate date and number buttons on page load
+        generateDateButtons();
+        generateNumberButtons();
     </script>
 </body>
-</html>
+</html> 
+
