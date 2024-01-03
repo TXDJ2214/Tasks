@@ -35,6 +35,30 @@
         <label for="saturday">Saturday</label>
     </div>
 
+    <div>
+        <input type="radio" name="day" id="sunday" value="Sunday" onclick="appendDay('Sunday')">
+        <label for="sunday">Sunday</label>
+
+        <input type="radio" name="day" id="monday" value="Monday" onclick="appendDay('Monday')">
+        <label for="monday">Monday</label>
+
+        <input type="radio" name="day" id="tuesday" value="Tuesday" onclick="appendDay('Tuesday')">
+        <label for="tuesday">Tuesday</label>
+
+        <input type="radio" name="day" id="wednesday" value="Wednesday" onclick="appendDay('Wednesday')">
+        <label for="wednesday">Wednesday</label>
+
+        <input type="radio" name="day" id="thursday" value="Thursday" onclick="appendDay('Thursday')">
+        <label for="thursday">Thursday</label>
+
+        <input type="radio" name="day" id="friday" value="Friday" onclick="appendDay('Friday')">
+        <label for="friday">Friday</label>
+
+        <input type="radio" name="day" id="saturday" value="Saturday" onclick="appendDay('Saturday')">
+        <label for="saturday">Saturday</label>
+    </div>
+
+    
     <script>
         function createTrelloCard() {
             const cardName = document.getElementById('cardName').value;
