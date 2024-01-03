@@ -5,71 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trello Card Creator</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            background-color: #f8f8f8;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        div {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            width: 80%;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        label {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        textarea {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 16px;
-            font-size: 16px;
-            resize: none;
-        }
-
-        button {
-            background-color: #007bff;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        p {
-            margin-top: 20px;
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        input[type="radio"] {
-            margin-right: 5px;
-        }
-
-        label[for^="date"], label[for^="name"] {
-            margin-right: 10px;
-        }
+        body { font-family: Arial, sans-serif; }
+        input, button, label { font-family: Arial, sans-serif; }
+        #cardName { resize: none; }
     </style>
 </head>
 <body>
@@ -92,7 +30,6 @@
         function createTrelloCard() {
             const cardName = encodeURIComponent(document.getElementById('cardName').value.trim());
             const apiUrl = `https://api.trello.com/1/cards?key=7d14288264ab0bf23e34850a66e9528e&token=ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69&name=${cardName}&idList=638df276517409004ab4ca3a`;
-        
 
             fetch(apiUrl, { method: 'POST' })
                 .then(response => response.json())
@@ -144,4 +81,5 @@
         generateNameButtons();
     </script>
 </body>
-</html>
+</html> 
+
