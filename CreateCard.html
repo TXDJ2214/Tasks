@@ -28,17 +28,13 @@
 <body>
     <div>
         <input type="text" id="textbox" placeholder="Type here...">
-        <button id="button">Click me3</button>
+        <button id="button">Click me</button>
     </div>
 
     <script>
-        // Additional check and delay for iOS Safari
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        if (isIOS) {
-            setTimeout(() => {
-                document.getElementById('textbox').focus();
-            }, 5000); // Adjust the delay as needed
-        }
+        document.getElementById('button').addEventListener('click', function() {
+            document.getElementById('textbox').focus();
+        });
     </script>
 </body>
 </html>
