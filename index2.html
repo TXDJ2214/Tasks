@@ -6,22 +6,24 @@
     <title>Trello Card Creator</title>
     <style>
         body { font-family: Calibri, sans-serif; }
-        input, button, label { font-family: Calibri, sans-serif; }
-        #cardName { resize: none; }
+        input, button, label, textarea { font-family: Calibri, sans-serif; }
+        #cardName { resize: none; overflow-y: hidden; }
+        .radioContainer { display: flex; }
+        .radioContainer input[type="radio"] { flex: 1; width: 0; margin: 5px; }
     </style>
 </head>
 <body>
     <div>
         <label for="cardName">Card Name:</label>
-        <textarea id="cardName" placeholder="Enter card name" rows="1"></textarea>
+        <textarea id="cardName" placeholder="Enter card name"></textarea>
         <button onclick="createTrelloCard()">Create Card</button>
     </div>
 
     <div>
         <p>Select date:</p>
-        <div id="dateRadios"></div>
+        <div class="radioContainer" id="dateRadios"></div>
         <p>Select name:</p>
-        <div id="nameRadios"></div>
+        <div class="radioContainer" id="nameRadios"></div>
     </div>
 
     <script>
@@ -30,7 +32,6 @@
         function createTrelloCard() {
             const cardName = encodeURIComponent(document.getElementById('cardName').value.trim());
             const apiUrl = `https://api.trello.com/1/cards?key=7d14288264ab0bf23e34850a66e9528e&token=ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69&name=${cardName}&idList=638df276517409004ab4ca3a`;
-
             fetch(apiUrl, { method: 'POST' })
                 .then(response => response.json())
                 .then(data => { console.log('Card created successfully:', data); document.getElementById('cardName').value = ''; })
@@ -61,25 +62,96 @@
 
         function appendName(name) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${name}${cardNameInput.value.replace(previousName, '')}`;
+            cardNameInput.value = `${name} ${cardNameInput.value.replace(previousName, '')}`;
             previousName = name;
         }
 
+        function openDatePicker() {
+            const datePicker = document.getElementById('datePicker');
+            datePicker.click();
+        }
+
+        function adjustTextareaHeight() {
+            const textarea = document.getElementById('cardName');
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+
+        document.getElementById('cardName').addEventListener('input', adjustTextareaHeight);
+
         function generateDateButtons() {
-            generateRadioButtons('dateRadios', Array.from({ length: 7 }, (_, i) => {
+            const dateContainer = document.getElementById('dateRadios');
+            
+            for (let i = 0; i < 7; i++) {
                 const date = new Date();
                 date.setDate(date.getDate() + i);
-                return `${date.toLocaleString('en', { weekday: 'short' })} ${date.getDate()} ${date.toLocaleString('en', { month: 'short' })}`;
-            }), 'date', appendDate);
+                
+                const dayOfWeek = date.toLocaleString('en', { weekday: 'short' });
+                const day = date.getDate();
+                const month = date.toLocaleString('en', { month: 'short' });
+
+                const formattedDate = `${dayOfWeek} ${day} ${month}`;
+
+                const radioBtn = document.createElement('input');
+                radioBtn.type = 'radio';
+                radioBtn.name = 'date';
+                radioBtn.id = `date${i + 1}`;
+                radioBtn.value = formattedDate;
+                radioBtn.addEventListener('click', function() {
+                    appendDate(formattedDate);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `date${i + 1}`;
+                label.textContent = formattedDate;
+
+                dateContainer.appendChild(radioBtn);
+                dateContainer.appendChild(label);
+            }
+
+            // Add an 8th radio button for date selection using date picker
+            const datePickerBtn = document.createElement('input');
+            datePickerBtn.type = 'radio';
+            datePickerBtn.name = 'date';
+            datePickerBtn.id = 'date8';
+            datePickerBtn.value = 'datePicker';
+            datePickerBtn.addEventListener('click', openDatePicker);
+
+            const datePickerLabel = document.createElement('label');
+            datePickerLabel.htmlFor = 'date8';
+            datePickerLabel.textContent = 'Date Picker';
+
+            dateContainer.appendChild(datePickerBtn);
+            dateContainer.appendChild(datePickerLabel);
         }
 
         function generateNameButtons() {
-            generateRadioButtons('nameRadios', ['Bene::', 'Mariano::', 'MaJu::', 'Cristian::', 'Maria::', 'David::', 'Emi::', 'Research::'], 'name', appendName);
+            const nameContainer = document.getElementById('nameRadios');
+            
+            const names = ['Bene::', 'Mariano::', 'MaJu::', 'Cristian::', 'Maria::', 'David::', 'Emi::', 'Research::'];
+            for (let i = 0; i < names.length; i++) {
+                const radioBtn = document.createElement('input');
+                radioBtn.type = 'radio';
+                radioBtn.name = 'name';
+                radioBtn.id = `name${i + 1}`;
+                radioBtn.value = names[i];
+                radioBtn.addEventListener('click', function() {
+                    appendName(names[i]);
+                });
+
+                const label = document.createElement('label');
+                label.htmlFor = `name${i + 1}`;
+                label.textContent = names[i];
+
+                nameContainer.appendChild(radioBtn);
+                nameContainer.appendChild(label);
+            }
         }
 
         generateDateButtons();
         generateNameButtons();
-    </script>
-</body>
-</html> 
+        </script>
+ </body>
+ </html>
+
 
