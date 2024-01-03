@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trello Card Creator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        input, button, label {
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
     <div>
@@ -14,118 +23,87 @@
 
     <div>
         <p>Select date:</p>
-        <div id="dateRadios">
-            <!-- JavaScript will populate the dates dynamically -->
-        </div>
-        <p>Select number:</p>
-        <div id="numberRadios">
-            <!-- JavaScript will populate the numbers dynamically -->
-        </div>
+        <div id="dateRadios"></div>
         <p>Select name:</p>
-        <div id="nameRadios">
-            <!-- JavaScript will populate the names dynamically -->
-        </div>
+        <div id="nameRadios"></div>
     </div>
 
     <script>
+        let previousDate = '';
+        let previousName = '';
+
         function createTrelloCard() {
-            const cardName = document.getElementById('cardName').value;
+            const cardName = document.getElementById('cardName').value.trim();
 
             // Replace these placeholders with your actual Trello API key, token, board ID, and list ID
         const apiKey = '7d14288264ab0bf23e34850a66e9528e';
         const apiToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-        const boardId = '58e8964f1c3d23a2f251e15a';
         const listId = '638df276517409004ab4ca3a';
 
-            // Trello API endpoint for creating a card
-            const apiUrl = `https://api.trello.com/1/cards?key=${apiKey}&token=${apiToken}&name=${cardName}&idList=${listId}`;
+            const formattedCardName = encodeURIComponent(cardName);
+            const apiUrl = `https://api.trello.com/1/cards?key=${apiKey}&token=${apiToken}&name=${formattedCardName}&idList=${listId}`;
 
-            // Using fetch to make a POST request to Trello API
-            fetch(apiUrl, {
-                method: 'POST',
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Card created successfully:', data);
-                // Reset the textbox value to an empty string after successful card creation
-                document.getElementById('cardName').value = '';
-            })
-            .catch(error => {
-                console.error('Error creating card:', error);
-                // Handle errors or provide feedback to the user
+            fetch(apiUrl, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Card created successfully:', data);
+                    document.getElementById('cardName').value = '';
+                })
+                .catch(error => {
+                    console.error('Error creating card:', error);
+                });
+        }
+
+        function generateRadioButtons(containerId, values, type, clickHandler) {
+            const container = document.getElementById(containerId);
+            
+            values.forEach((value, index) => {
+                const radioBtn = document.createElement('input');
+                radioBtn.type = 'radio';
+                radioBtn.name = type;
+                radioBtn.id = `${type}${index + 1}`;
+                radioBtn.value = value;
+                radioBtn.addEventListener('click', () => clickHandler(value));
+
+                const label = document.createElement('label');
+                label.htmlFor = `${type}${index + 1}`;
+                label.textContent = value;
+
+                container.appendChild(radioBtn);
+                container.appendChild(label);
             });
-        }
-
-        // Dynamically generate dates for radio buttons
-        function generateDateButtons() {
-            const dateContainer = document.getElementById('dateRadios');
-            
-            for (let i = 0; i < 7; i++) {
-                const date = new Date();
-                date.setDate(date.getDate() + i);
-                
-                const dayOfWeek = date.toLocaleString('en', { weekday: 'short' });
-                const day = date.getDate();
-                const month = date.toLocaleString('en', { month: 'short' });
-
-                const formattedDate = `${dayOfWeek} ${day} ${month}`;
-
-                const radioBtn = document.createElement('input');
-                radioBtn.type = 'radio';
-                radioBtn.name = 'date';
-                radioBtn.id = formattedDate;
-                radioBtn.value = formattedDate;
-                radioBtn.addEventListener('click', function() {
-                    appendDate(formattedDate);
-                });
-
-                const label = document.createElement('label');
-                label.htmlFor = formattedDate;
-                label.textContent = formattedDate;
-
-                dateContainer.appendChild(radioBtn);
-                dateContainer.appendChild(label);
-            }
-        }
-
-        // Dynamically generate numbers for radio buttons
-        function generateNumberButtons() {
-            const numberContainer = document.getElementById('numberRadios');
-            
-            const numbers = ['Tom', 'John', 'Ron', 'Sam', 'Bene', 'Luis', 'Paul'];
-
-            for (let i = 0; i < numbers.length; i++) {
-                const radioBtn = document.createElement('input');
-                radioBtn.type = 'radio';
-                radioBtn.name = 'number';
-                radioBtn.id = `number${i + 1}`;
-                radioBtn.value = numbers[i];
-                radioBtn.addEventListener('click', function() {
-                    appendNumber(numbers[i]);
-                });
-
-                const label = document.createElement('label');
-                label.htmlFor = `number${i + 1}`;
-                label.textContent = numbers[i];
-
-                numberContainer.appendChild(radioBtn);
-                numberContainer.appendChild(label);
-            }
         }
 
         function appendDate(date) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${cardNameInput.value} ${date}`;
+            cardNameInput.value = cardNameInput.value.replace(previousDate, '');
+            cardNameInput.value = `${cardNameInput.value.trim()} ${date}`;
+            previousDate = date;
         }
 
-        function appendNumber(number) {
+        function appendName(name) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${number} ${cardNameInput.value}`;
+            cardNameInput.value = `${name} ${cardNameInput.value.replace(previousName, '')}`;
+            previousName = name;
         }
 
-        // Call the functions to generate date, number, and name buttons on page load
+        function generateDateButtons() {
+            const dateValues = Array.from({ length: 7 }, (_, i) => {
+                const date = new Date();
+                date.setDate(date.getDate() + i);
+                return `${date.toLocaleString('en', { weekday: 'short' })} ${date.getDate()} ${date.toLocaleString('en', { month: 'short' })}`;
+            });
+
+            generateRadioButtons('dateRadios', dateValues, 'date', appendDate);
+        }
+
+        function generateNameButtons() {
+            const nameValues = ['Tom', 'John', 'Ron', 'Sam', 'Bene', 'Luis', 'Paul'];
+            generateRadioButtons('nameRadios', nameValues, 'name', appendName);
+        }
+
         generateDateButtons();
-        generateNumberButtons();
+        generateNameButtons();
     </script>
 </body>
 </html>
