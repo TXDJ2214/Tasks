@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trello Card Creator</title>
+</head>
+<body>
+  <h1>Trello Card Creator</h1>
+  <label for="cardName">Card Name:</label>
+  <input type="text" id="cardName" name="cardName" placeholder="Enter card name">
 
+  <button onclick="createTrelloCard()">Create Card</button>
+
+  <script>
+    function createTrelloCard() {
+      // Add your backend logic here to interact with Trello API
+      // Example: Use fetch() to send a request to your server and handle Trello API interactions on the server-side
+      // You'll need to implement server-side code to handle Trello API authentication and card creation.
+      // Remember to keep your Trello API key and token secure.
+
+      // Example:
+      // fetch('/create-trello-card', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({
+      //     cardName: document.getElementById('cardName').value,
+      //   }),
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   console.log('Trello card created:', data);
+      // })
+      // .catch(error => {
+      //   console.error('Error creating Trello card:', error);
+      // });
+    }
+  </script>
+</body>
+</html>
