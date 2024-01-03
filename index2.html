@@ -9,15 +9,19 @@
             font-family: Arial, sans-serif;
         }
 
-        input, button, label {
+        textarea, button, label {
             font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            resize: vertical;
         }
     </style>
 </head>
 <body>
     <div>
         <label for="cardName">Card Name:</label>
-        <input type="text" id="cardName" placeholder="Enter card name">
+        <textarea id="cardName" placeholder="Enter card name"></textarea>
         <button onclick="createTrelloCard()">Create Card</button>
     </div>
 
@@ -33,51 +37,34 @@
         let previousName = '';
 
         function createTrelloCard() {
-            const cardName = document.getElementById('cardName').value.trim();
-
-            // Replace these placeholders with your actual Trello API key, token, board ID, and list ID
-        const apiKey = '7d14288264ab0bf23e34850a66e9528e';
-        const apiToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-        const listId = '638df276517409004ab4ca3a';
-
-            const formattedCardName = encodeURIComponent(cardName);
-            const apiUrl = `https://api.trello.com/1/cards?key=${apiKey}&token=${apiToken}&name=${formattedCardName}&idList=${listId}`;
-
+            const cardName = encodeURIComponent(document.getElementById('cardName').value.trim());
+            const apiUrl = `https://api.trello.com/1/cards?key=7d14288264ab0bf23e34850a66e9528e&token=ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69&name=${cardName}&idList=638df276517409004ab4ca3a`;
+         
             fetch(apiUrl, { method: 'POST' })
                 .then(response => response.json())
-                .then(data => {
-                    console.log('Card created successfully:', data);
-                    document.getElementById('cardName').value = '';
-                })
-                .catch(error => {
-                    console.error('Error creating card:', error);
-                });
+                .then(data => { console.log('Card created successfully:', data); document.getElementById('cardName').value = ''; })
+                .catch(error => { console.error('Error creating card:', error); });
         }
 
         function generateRadioButtons(containerId, values, type, clickHandler) {
             const container = document.getElementById(containerId);
-            
-            values.forEach((value, index) => {
-                const radioBtn = document.createElement('input');
+            values.forEach((value, i) => {
+                const radioBtn = container.appendChild(document.createElement('input'));
                 radioBtn.type = 'radio';
                 radioBtn.name = type;
-                radioBtn.id = `${type}${index + 1}`;
+                radioBtn.id = `${type}${i + 1}`;
                 radioBtn.value = value;
                 radioBtn.addEventListener('click', () => clickHandler(value));
 
-                const label = document.createElement('label');
-                label.htmlFor = `${type}${index + 1}`;
+                const label = container.appendChild(document.createElement('label'));
+                label.htmlFor = `${type}${i + 1}`;
                 label.textContent = value;
-
-                container.appendChild(radioBtn);
-                container.appendChild(label);
             });
         }
 
         function appendDate(date) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = cardNameInput.value.replace(previousDate, '');
-            cardNameInput.value = `${cardNameInput.value.trim()} ${date}`;
+            cardNameInput.value = cardNameInput.value.replace(previousDate, '').trim() + ` ${date}`;
             previousDate = date;
         }
 
@@ -88,18 +75,15 @@
         }
 
         function generateDateButtons() {
-            const dateValues = Array.from({ length: 7 }, (_, i) => {
+            generateRadioButtons('dateRadios', Array.from({ length: 7 }, (_, i) => {
                 const date = new Date();
                 date.setDate(date.getDate() + i);
                 return `${date.toLocaleString('en', { weekday: 'short' })} ${date.getDate()} ${date.toLocaleString('en', { month: 'short' })}`;
-            });
-
-            generateRadioButtons('dateRadios', dateValues, 'date', appendDate);
+            }), 'date', appendDate);
         }
 
         function generateNameButtons() {
-            const nameValues = ['Tom', 'John', 'Ron', 'Sam', 'Bene', 'Luis', 'Paul'];
-            generateRadioButtons('nameRadios', nameValues, 'name', appendName);
+            generateRadioButtons('nameRadios', ['Tom', 'John', 'Ron', 'Sam', 'Bene', 'Luis', 'Paul'], 'name', appendName);
         }
 
         generateDateButtons();
