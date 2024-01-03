@@ -62,7 +62,7 @@
 
         function appendName(name) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${name} ${cardNameInput.value.replace(previousName, '')}`;
+            cardNameInput.value = `${name}${cardNameInput.value.replace(previousName, '')}`;
             previousName = name;
         }
 
