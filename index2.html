@@ -12,6 +12,16 @@
         <button onclick="createTrelloCard()">Create Card</button>
     </div>
 
+    <div>
+        <button onclick="appendDay('Sunday')">Sunday</button>
+        <button onclick="appendDay('Monday')">Monday</button>
+        <button onclick="appendDay('Tuesday')">Tuesday</button>
+        <button onclick="appendDay('Wednesday')">Wednesday</button>
+        <button onclick="appendDay('Thursday')">Thursday</button>
+        <button onclick="appendDay('Friday')">Friday</button>
+        <button onclick="appendDay('Saturday')">Saturday</button>
+    </div>
+
     <script>
         function createTrelloCard() {
             const cardName = document.getElementById('cardName').value;
@@ -21,7 +31,8 @@
             const apiToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
             const boardId = '58e8964f1c3d23a2f251e15a';
             const listId = '638df276517409004ab4ca3a';
-            
+
+
             // Trello API endpoint for creating a card
             const apiUrl = `https://api.trello.com/1/cards?key=${apiKey}&token=${apiToken}&name=${cardName}&idList=${listId}`;
 
@@ -32,12 +43,18 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Card created successfully:', data);
-                // You can add additional handling or feedback here
+                // Reset the textbox value to an empty string after successful card creation
+                document.getElementById('cardName').value = '';
             })
             .catch(error => {
                 console.error('Error creating card:', error);
                 // Handle errors or provide feedback to the user
             });
+        }
+
+        function appendDay(day) {
+            const cardNameInput = document.getElementById('cardName');
+            cardNameInput.value = `${day} - ${cardNameInput.value}`;
         }
     </script>
 </body>
