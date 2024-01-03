@@ -61,7 +61,7 @@
 
         function appendName(name) {
             const cardNameInput = document.getElementById('cardName');
-            cardNameInput.value = `${name} ${cardNameInput.value.replace(previousName, '')}`;
+            cardNameInput.value = `${name}${cardNameInput.value.replace(previousName, '')}`;
             previousName = name;
         }
 
@@ -74,7 +74,7 @@
         }
 
         function generateNameButtons() {
-            generateRadioButtons('nameRadios', ['Tom', 'John', 'Ron', 'Sam', 'Bene', 'Luis', 'Paul'], 'name', appendName);
+            generateRadioButtons('nameRadios', ['Bene::', 'Mariano::', 'MaJu::', 'Cristian::', 'Maria::', 'David::', 'Emi::', 'Research::'], 'name', appendName);
         }
 
         generateDateButtons();
