@@ -20,6 +20,11 @@
         .options {
             width: 100%;
         }
+
+        .thomas { background-color: blue; }
+        .bene { background-color: green; }
+        .jose { background-color: orange; }
+        .otro { background-color: grey; }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -53,11 +58,14 @@
                     var select = document.createElement("select");
                     select.className = "options";
                     select.name = rows[i].toLowerCase().replace(/\s+/g, "_") + "_" + columnDates[j].toLowerCase().replace(/\s+/g, "_");
-                    
+                    select.addEventListener("change", function() {
+                        updateCellColor(this);
+                    });
+
                     var options = ["Thomas", "Bene", "Jose", "Otro"];
                     for (var k = 0; k < options.length; k++) {
                         var option = document.createElement("option");
-                        option.value = options[k];
+                        option.value = options[k].toLowerCase();
                         option.textContent = options[k];
                         select.appendChild(option);
                     }
@@ -67,6 +75,21 @@
                 }
 
                 tbody.appendChild(row);
+            }
+
+            function updateCellColor(selectElement) {
+                var selectedValue = selectElement.value;
+                var cell = selectElement.closest("td");
+                cell.className = ""; // Reset class
+                if (selectedValue === "thomas") {
+                    cell.classList.add("thomas");
+                } else if (selectedValue === "bene") {
+                    cell.classList.add("bene");
+                } else if (selectedValue === "jose") {
+                    cell.classList.add("jose");
+                } else if (selectedValue === "otro") {
+                    cell.classList.add("otro");
+                }
             }
         });
     </script>
