@@ -25,6 +25,13 @@
         .bene { background-color: green; }
         .jose { background-color: orange; }
         .otro { background-color: grey; }
+
+        #summaryTable {
+            margin-top: 20px;
+            width: 60%;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -60,6 +67,7 @@
                     select.name = rows[i].toLowerCase().replace(/\s+/g, "_") + "_" + columnDates[j].toLowerCase().replace(/\s+/g, "_");
                     select.addEventListener("change", function() {
                         updateCellColor(this);
+                        updateSummaryTable();
                     });
 
                     var options = ["Thomas", "Bene", "Jose", "Otro"];
@@ -91,6 +99,37 @@
                     cell.classList.add("otro");
                 }
             }
+
+            function updateSummaryTable() {
+                var options = ["thomas", "bene", "jose", "otro"];
+                var counts = {};
+
+                for (var i = 0; i < options.length; i++) {
+                    counts[options[i]] = 0;
+                }
+
+                var selectElements = document.querySelectorAll(".options");
+                for (var i = 0; i < selectElements.length; i++) {
+                    var selectedValue = selectElements[i].value.toLowerCase();
+                    counts[selectedValue]++;
+                }
+
+                var summaryTable = document.getElementById("summaryTable");
+                summaryTable.innerHTML = "<tr><th>Option</th><th>Count</th></tr>";
+
+                for (var i = 0; i < options.length; i++) {
+                    var row = document.createElement("tr");
+                    var optionCell = document.createElement("td");
+                    optionCell.textContent = options[i];
+                    row.appendChild(optionCell);
+
+                    var countCell = document.createElement("td");
+                    countCell.textContent = counts[options[i]];
+                    row.appendChild(countCell);
+
+                    summaryTable.appendChild(row);
+                }
+            }
         });
     </script>
 </head>
@@ -111,6 +150,19 @@
             <!-- Rows and columns will be generated dynamically with JavaScript -->
         </tbody>
     </table>
+
+    <button onclick="submitForm()">Submit</button>
+
+    <table id="summaryTable">
+        <!-- Summary table will be updated dynamically with JavaScript -->
+    </table>
+
+    <script>
+        function submitForm() {
+            // You can add logic here to handle the form submission
+            alert("Form submitted!");
+        }
+    </script>
 
 </body>
 </html>
