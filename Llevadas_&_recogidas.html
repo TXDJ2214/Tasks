@@ -38,6 +38,36 @@
             for (var i = 1; i <= 5; i++) {
                 thElements[i].textContent = columnDates[i - 1];
             }
+
+            var tbody = document.querySelector("tbody");
+            var rows = ["Llevar a Pato", "Llevar a Cami", "Recoger a Pato", "Recoger a Cami"];
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = document.createElement("tr");
+                var th = document.createElement("th");
+                th.textContent = rows[i];
+                row.appendChild(th);
+
+                for (var j = 0; j < 5; j++) {
+                    var td = document.createElement("td");
+                    var select = document.createElement("select");
+                    select.className = "options";
+                    select.name = rows[i].toLowerCase().replace(/\s+/g, "_") + "_" + columnDates[j].toLowerCase().replace(/\s+/g, "_");
+                    
+                    var options = ["Thomas", "Bene", "Jose", "Otro"];
+                    for (var k = 0; k < options.length; k++) {
+                        var option = document.createElement("option");
+                        option.value = options[k];
+                        option.textContent = options[k];
+                        select.appendChild(option);
+                    }
+
+                    td.appendChild(select);
+                    row.appendChild(td);
+                }
+
+                tbody.appendChild(row);
+            }
         });
     </script>
 </head>
@@ -55,50 +85,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th>Llevar a Pato</th>
-                <td>
-                    <select class="options" name="llevar_pato_monday">
-                        <option value="Thomas">Thomas</option>
-                        <option value="Bene">Bene</option>
-                        <option value="Jose">Jose</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="options" name="llevar_pato_tuesday">
-                        <option value="Thomas">Thomas</option>
-                        <option value="Bene">Bene</option>
-                        <option value="Jose">Jose</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="options" name="llevar_pato_wednesday">
-                        <option value="Thomas">Thomas</option>
-                        <option value="Bene">Bene</option>
-                        <option value="Jose">Jose</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="options" name="llevar_pato_thursday">
-                        <option value="Thomas">Thomas</option>
-                        <option value="Bene">Bene</option>
-                        <option value="Jose">Jose</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="options" name="llevar_pato_friday">
-                        <option value="Thomas">Thomas</option>
-                        <option value="Bene">Bene</option>
-                        <option value="Jose">Jose</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </td>
-            </tr>
-            <!-- Repeat similar rows for Llevar a Cami, Recoger a Pato, and Recoger a Cami -->
+            <!-- Rows and columns will be generated dynamically with JavaScript -->
         </tbody>
     </table>
 
