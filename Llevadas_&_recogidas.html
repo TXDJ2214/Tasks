@@ -78,6 +78,10 @@
                         select.appendChild(option);
                     }
 
+                    // Set a default option to be selected
+                    select.value = options[0].toLowerCase();
+                    updateCellColor(select);
+
                     td.appendChild(select);
                     row.appendChild(td);
                 }
