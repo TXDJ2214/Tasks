@@ -28,11 +28,11 @@
         <thead>
             <tr>
                 <th></th>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
+                <th><?php echo date('D dM', strtotime('next Monday')); ?></th>
+                <th><?php echo date('D dM', strtotime('next Tuesday')); ?></th>
+                <th><?php echo date('D dM', strtotime('next Wednesday')); ?></th>
+                <th><?php echo date('D dM', strtotime('next Thursday')); ?></th>
+                <th><?php echo date('D dM', strtotime('next Friday')); ?></th>
             </tr>
         </thead>
         <tbody>
