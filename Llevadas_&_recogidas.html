@@ -21,6 +21,25 @@
             width: 100%;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var currentDate = new Date();
+            var daysToAdd = (1 - currentDate.getDay() + 7) % 7; // Calculate days to next Monday
+            var columnDates = [];
+
+            for (var i = 0; i < 5; i++) {
+                var columnDate = new Date(currentDate);
+                columnDate.setDate(currentDate.getDate() + daysToAdd + i);
+                var formattedDate = columnDate.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric', month: 'short' });
+                columnDates.push(formattedDate);
+            }
+
+            var thElements = document.querySelectorAll("thead th");
+            for (var i = 1; i <= 5; i++) {
+                thElements[i].textContent = columnDates[i - 1];
+            }
+        });
+    </script>
 </head>
 <body>
 
@@ -28,11 +47,11 @@
         <thead>
             <tr>
                 <th></th>
-                <th><?php echo date('D dM', strtotime('next Monday')); ?></th>
-                <th><?php echo date('D dM', strtotime('next Tuesday')); ?></th>
-                <th><?php echo date('D dM', strtotime('next Wednesday')); ?></th>
-                <th><?php echo date('D dM', strtotime('next Thursday')); ?></th>
-                <th><?php echo date('D dM', strtotime('next Friday')); ?></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
