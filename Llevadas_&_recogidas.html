@@ -138,6 +138,42 @@
                 }
             }
         });
+
+        function submitForm() {
+            var tableData = collectTableData();
+            var jsonOutput = JSON.stringify(tableData, null, 2);
+            alert("Table data in iOS Shortcuts format:\n\n" + jsonOutput);
+        }
+
+        function collectTableData() {
+            var tableData = [];
+            var rows = document.querySelectorAll("tbody tr");
+
+            rows.forEach(function(row) {
+                var rowData = {};
+                var cells = row.querySelectorAll("td");
+
+                cells.forEach(function(cell, index) {
+                    var select = cell.querySelector("select");
+                    var optionValue = select.value;
+
+                    if (optionValue !== "none") {
+                        var date = document.querySelectorAll("thead th")[index + 1].textContent;
+                        var person = row.querySelector("th").textContent;
+                        
+                        if (!rowData.hasOwnProperty(date)) {
+                            rowData[date] = {};
+                        }
+
+                        rowData[date][person] = optionValue;
+                    }
+                });
+
+                tableData.push(rowData);
+            });
+
+            return tableData;
+        }
     </script>
 </head>
 <body>
@@ -163,13 +199,6 @@
     <table id="summaryTable">
         <!-- Summary table will be updated dynamically with JavaScript -->
     </table>
-
-    <script>
-        function submitForm() {
-            // You can add logic here to handle the form submission
-            alert("Form submitted!");
-        }
-    </script>
 
 </body>
 </html>
