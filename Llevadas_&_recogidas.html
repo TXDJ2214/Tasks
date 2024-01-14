@@ -78,10 +78,6 @@
                         select.appendChild(option);
                     }
 
-                    // Set a default option to be selected
-                    select.value = options[0].toLowerCase();
-                    updateCellColor(select);
-
                     td.appendChild(select);
                     row.appendChild(td);
                 }
@@ -142,21 +138,4 @@
     <table>
         <thead>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Rows and columns will be generated dynamically with JavaScript -->
-        </tbody>
-    </table>
-
-    <table id="summaryTable">
-        <!-- Summary table will be updated dynamically with JavaScript -->
-    </table>
-</body>
-</html>
+                <th
