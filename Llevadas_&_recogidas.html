@@ -71,6 +71,12 @@
                         updateSummaryTable();
                     });
 
+                    // Add "None" as the first option
+                    var noneOption = document.createElement("option");
+                    noneOption.value = "none";
+                    noneOption.textContent = "None";
+                    select.appendChild(noneOption);
+
                     var options = ["Thomas", "Bene", "Jose", "Otro"];
                     for (var k = 0; k < options.length; k++) {
                         var option = document.createElement("option");
@@ -102,7 +108,7 @@
             }
 
             function updateSummaryTable() {
-                var options = ["thomas", "bene", "jose", "otro"];
+                var options = ["none", "thomas", "bene", "jose", "otro"];
                 var counts = {};
 
                 for (var i = 0; i < options.length; i++) {
@@ -121,7 +127,7 @@
                 for (var i = 0; i < options.length; i++) {
                     var row = document.createElement("tr");
                     var optionCell = document.createElement("td");
-                    optionCell.textContent = options[i];
+                    optionCell.textContent = options[i].charAt(0).toUpperCase() + options[i].slice(1); // Capitalize first letter
                     row.appendChild(optionCell);
 
                     var countCell = document.createElement("td");
