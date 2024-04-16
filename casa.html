@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>List Trello Boards</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trello BoardsA</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <h1>Trello Boards</h1>
+    <ul id="boardList">
+        <!-- Boards will be listed here -->
+    </ul>
 
-<h1>List of Trello Boards2</h1>
+    <script>
+        $(document).ready(function() {
+            // Trello API key and token
+            var apiKey = '7d14288264ab0bf23e34850a66e9528e';
+            var token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
 
-<ul id="boardList">
-  <!-- Trello boards will be listed here -->
-</ul>
+            // Trello username
+            var username = 'TRELLO_USERNAME';
 
-<script>
-// Replace 'YOUR_API_KEY' with your actual Trello API key
-const apiKey = '7d14288264ab0bf23e34850a66e9528e';
+            // API URL to get boards
+            var url = 'https://api.trello.com/1/members/' + username + '/boards?key=' + apiKey + '&token=' + token;
 
-// Fetch Trello boards
-fetch(`https://api.trello.com/1/members/me/boards?key=${apiKey}`)
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Failed to fetch Trello boards');
-    }
-    return response.json();
-  })
-  .then(boards => {
-    const boardList = document.getElementById('boardList');
-    boards.forEach(board => {
-      const listItem = document.createElement('li');
-      listItem.textContent = board.name;
-      boardList.appendChild(listItem);
-    });
-  })
-  .catch(error => {
-    console.error('Error fetching Trello boards:', error);
-  });
-</script>
-
+            // Make API request
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(boards) {
+                    // Iterate through boards and add them to the list
+                    $.each(boards, function(index, board) {
+                        $('#boardList').append('<li>' + board.name + '</li>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(status, error);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
