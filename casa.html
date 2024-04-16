@@ -3,40 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trello BoardsC</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Trello Board Cards11</title>
 </head>
 <body>
-    <h1>Trello Boards</h1>
-    <ul id="boardList">
-        <!-- Boards will be listed here -->
-    </ul>
 
-    <script>
-        $(document).ready(function() {
-            // Trello API key and token
-            var apiKey = '7d14288264ab0bf23e34850a66e9528e';
-            var token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-            var username = 'thomasdavis25';
+<h1>Trello Board Cards</h1>
 
-            // API URL to get boards
-            var url = 'https://api.trello.com/1/members/' + username + '/boards?key=' + apiKey + '&token=' + token;
+<div id="cards-container">
+    <!-- Cards will be dynamically inserted here -->
+</div>
 
-            // Make API request
-            $.ajax({
-                url: url,
-                type: 'GET',
-                success: function(boards) {
-                    // Iterate through boards and add them to the list
-                    $.each(boards, function(index, board) {
-                        $('#boardList').append('<li>' + board.name + ' - ID: ' + board.id + '</li>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(status, error);
-                }
-            });
+<script>
+    // Trello board API URL
+    const boardUrl = 'https://api.trello.com/1/boards/6357540ec8ee600110df8b96/cards?key=7d14288264ab0bf23e34850a66e9528e&token=ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+
+    // Function to fetch cards from Trello board
+    async function fetchCards() {
+        try {
+            const response = await fetch(boardUrl);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching cards:', error);
+        }
+    }
+
+    // Function to display cards on the webpage
+    async function displayCards() {
+        const cardsContainer = document.getElementById('cards-container');
+        const cards = await fetchCards();
+        cards.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.innerHTML = `
+                <div>
+                    <h3>${card.name}</h3>
+                    <p>${card.desc}</p>
+                    <p>Due Date: ${card.due || 'None'}</p>
+                </div>
+                <hr>
+            `;
+            cardsContainer.appendChild(cardElement);
         });
-    </script>
+    }
+
+    // Call function to display cards when the page loads
+    displayCards();
+</script>
+
 </body>
 </html>
