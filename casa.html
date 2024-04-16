@@ -1,53 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trello Board Cards11</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trello Board Lists Dropdown</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
-<h1>Trello Board Cards</h1>
+<h1>Trello Board Lists Dropdown</h1>
 
-<div id="cards-container">
-    <!-- Cards will be dynamically inserted here -->
-</div>
+<select id="listDropdown">
+    <option value="">Select a list</option>
+    <!-- Lists will be dynamically added here -->
+</select>
 
 <script>
-    // Trello board API URL
-    const boardUrl = 'https://api.trello.com/1/boards/6357540ec8ee600110df8b96/cards?key=7d14288264ab0bf23e34850a66e9528e&token=ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+$(document).ready(function() {
+    var boardId = "6357540ec8ee600110df8b96"; // Replace with your Trello board ID
 
-    // Function to fetch cards from Trello board
-    async function fetchCards() {
-        try {
-            const response = await fetch(boardUrl);
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            console.error('Error fetching cards:', error);
+    // Fetch lists using Trello API
+    $.ajax({
+        url: "https://api.trello.com/1/boards/" + boardId + "/lists",
+        type: "GET",
+        data: {
+            key: "7d14288264ab0bf23e34850a66e9528e", // Replace with your Trello API key
+            token: "ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69" // Replace with your Trello API token
+        },
+        success: function(response) {
+            // Loop through the lists and add them to the dropdown
+            for (var i = 0; i < response.length; i++) {
+                var listName = response[i].name;
+                $("#listDropdown").append("<option value='" + response[i].id + "'>" + listName + "</option>");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching lists: " + error);
         }
-    }
-
-    // Function to display cards on the webpage
-    async function displayCards() {
-        const cardsContainer = document.getElementById('cards-container');
-        const cards = await fetchCards();
-        cards.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.innerHTML = `
-                <div>
-                    <h3>${card.name}</h3>
-                    <p>${card.desc}</p>
-                    <p>Due Date: ${card.due || 'None'}</p>
-                </div>
-                <hr>
-            `;
-            cardsContainer.appendChild(cardElement);
-        });
-    }
-
-    // Call function to display cards when the page loads
-    displayCards();
+    });
+});
 </script>
 
 </body>
