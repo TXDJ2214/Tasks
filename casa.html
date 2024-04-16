@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trello BoardsB</title>
+    <title>Trello BoardsC</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -17,8 +17,6 @@
             // Trello API key and token
             var apiKey = '7d14288264ab0bf23e34850a66e9528e';
             var token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-
-            // Trello username
             var username = 'thomasdavis25';
 
             // API URL to get boards
@@ -31,7 +29,7 @@
                 success: function(boards) {
                     // Iterate through boards and add them to the list
                     $.each(boards, function(index, board) {
-                        $('#boardList').append('<li>' + board.name + '</li>');
+                        $('#boardList').append('<li>' + board.name + ' - ID: ' + board.id + '</li>');
                     });
                 },
                 error: function(xhr, status, error) {
