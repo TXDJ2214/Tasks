@@ -3,29 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trello Board Lists Dropdown</title>
+<title>Trello Board Lists and Cards</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
-<h1>Trello Board Lists Dropdown</h1>
+<h1>Trello Board Lists and Cards</h1>
 
 <select id="listDropdown">
     <option value="">Select a list</option>
     <!-- Lists will be dynamically added here -->
 </select>
 
+<ul id="cardsList">
+    <!-- Cards will be dynamically added here -->
+</ul>
+
 <script>
 $(document).ready(function() {
     var boardId = "6357540ec8ee600110df8b96"; // Replace with your Trello board ID
 
-    // Fetch lists using Trello API
+    // Function to fetch and display cards in a list
+    function showCardsInList(listId) {
+        $.ajax({
+            url: "https://api.trello.com/1/lists/" + listId + "/cards",
+            type: "GET",
+            data: {
+                key: "7d14288264ab0bf23e34850a66e9528e", // Replace with your Trello API key
+                token: "ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69" // Replace with your Trello API token
+            },
+            success: function(response) {
+                $("#cardsList").empty(); // Clear previous cards
+                // Loop through the cards and add them to the HTML
+                for (var i = 0; i < response.length; i++) {
+                    var cardName = response[i].name;
+                    $("#cardsList").append("<li>" + cardName + "</li>");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching cards: " + error);
+            }
+        });
+    }
+
+    // Fetch lists using Trello API and populate the dropdown
     $.ajax({
         url: "https://api.trello.com/1/boards/" + boardId + "/lists",
         type: "GET",
         data: {
-            key: "7d14288264ab0bf23e34850a66e9528e", // Replace with your Trello API key
-            token: "ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69" // Replace with your Trello API token
+            key: "YOUR_API_KEY", // Replace with your Trello API key
+            token: "YOUR_API_TOKEN" // Replace with your Trello API token
         },
         success: function(response) {
             // Loop through the lists and add them to the dropdown
@@ -36,6 +63,16 @@ $(document).ready(function() {
         },
         error: function(xhr, status, error) {
             console.error("Error fetching lists: " + error);
+        }
+    });
+
+    // Event listener for dropdown change
+    $("#listDropdown").change(function() {
+        var selectedListId = $(this).val();
+        if (selectedListId !== "") {
+            showCardsInList(selectedListId);
+        } else {
+            $("#cardsList").empty(); // Clear the cards list if no list selected
         }
     });
 });
