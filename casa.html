@@ -19,7 +19,12 @@ const apiKey = '7d14288264ab0bf23e34850a66e9528e';
 
 // Fetch Trello boards
 fetch(`https://api.trello.com/1/members/me/boards?key=${apiKey}`)
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to fetch Trello boards');
+    }
+    return response.json();
+  })
   .then(boards => {
     const boardList = document.getElementById('boardList');
     boards.forEach(board => {
