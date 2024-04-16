@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trello Board Lists and Cards</title>
+<title>Trello Board Lists and Cards2</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
@@ -22,6 +22,8 @@
 <script>
 $(document).ready(function() {
     var boardId = "6357540ec8ee600110df8b96"; // Replace with your Trello board ID
+    var apiKey = "7d14288264ab0bf23e34850a66e9528e"; // Replace with your Trello API key
+    var apiToken = "ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69"; // Replace with your Trello API token
 
     // Function to fetch and display cards in a list
     function showCardsInList(listId) {
@@ -29,8 +31,8 @@ $(document).ready(function() {
             url: "https://api.trello.com/1/lists/" + listId + "/cards",
             type: "GET",
             data: {
-                key: "7d14288264ab0bf23e34850a66e9528e", // Replace with your Trello API key
-                token: "ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69" // Replace with your Trello API token
+                key: apiKey,
+                token: apiToken
             },
             success: function(response) {
                 $("#cardsList").empty(); // Clear previous cards
@@ -51,8 +53,8 @@ $(document).ready(function() {
         url: "https://api.trello.com/1/boards/" + boardId + "/lists",
         type: "GET",
         data: {
-            key: "YOUR_API_KEY", // Replace with your Trello API key
-            token: "YOUR_API_TOKEN" // Replace with your Trello API token
+            key: apiKey,
+            token: apiToken
         },
         success: function(response) {
             // Loop through the lists and add them to the dropdown
