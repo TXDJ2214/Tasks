@@ -1,6 +1,3 @@
-To append the label name to each card title between square brackets, you can modify the code inside the `fetchAndUpdate` function to include the label name in the card title. Here's the updated code:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +6,7 @@ To append the label name to each card title between square brackets, you can mod
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f5f7;
+        background-color: #0079bf; /* Blue background color */
         margin: 0;
         padding: 20px;
     }
@@ -22,7 +19,7 @@ To append the label name to each card title between square brackets, you can mod
         border-radius: 3px;
         margin: 0 10px 10px 0;
         padding: 10px;
-        width: calc(50% - 15px);
+        width: 800px; /* Set fixed width to 800px */
     }
     .list h2 {
         font-size: 18px;
@@ -66,11 +63,14 @@ To append the label name to each card title between square brackets, you can mod
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
-                                    var labelName = '';
+                                    var cardTitle = card.name;
                                     if (card.labels.length > 0) {
-                                        labelName = '[' + card.labels[0].name + '] ';
+                                        var labelNames = card.labels.map(function(label) {
+                                            return label.name;
+                                        }).join(', ');
+                                        cardTitle += ' [' + labelNames + ']';
                                     }
-                                    var cardHtml = '<div class="card"><p>' + labelName + card.name + '</p></div>';
+                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
                                     $('#cards-' + list.id).append(cardHtml);
                                 });
                             });
@@ -88,6 +88,3 @@ To append the label name to each card title between square brackets, you can mod
     </script>
 </body>
 </html>
-```
-
-This code checks if each card has labels associated with it. If it does, it appends the label name to the card title between square brackets. If there are no labels, it simply appends the card title without any modification.
