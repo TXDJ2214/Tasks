@@ -39,6 +39,9 @@
         margin-right: 5px;
         border-radius: 2px;
     }
+    .label strong {
+        font-weight: bold;
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -70,7 +73,7 @@
                                     var cardTitle = card.name;
                                     if (card.labels.length > 0) {
                                         card.labels.forEach(function(label) {
-                                            cardTitle = '<div class="label" style="background-color: #' + label.color + ';"></div>' + cardTitle;
+                                            cardTitle = '<div class="label" style="background-color: #' + label.color + ';"><strong>' + label.name + '</strong></div>' + cardTitle;
                                         });
                                     }
                                     var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
