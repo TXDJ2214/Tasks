@@ -42,8 +42,8 @@
 <script>
   // Simulated data
   const data = [
-    { name: 'List 1', cards: [{ name: 'Card 1' }, { name: 'Card 2' }] },
-    { name: 'List 2', cards: [{ name: 'Card 3' }, { name: 'Card 4' }] }
+    { name: 'List 1', cards: ['Card 1', 'Card 2'] },
+    { name: 'List 2', cards: ['Card 3', 'Card 4'] }
   ];
 
   // Rendering data
@@ -57,7 +57,7 @@
     list.cards.forEach(card => {
       const cardElement = document.createElement('div');
       cardElement.classList.add('card');
-      cardElement.textContent = card.name;
+      cardElement.textContent = card;
       listContainer.appendChild(cardElement);
     });
     board.appendChild(listContainer);
