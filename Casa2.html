@@ -8,6 +8,8 @@
   body {
     font-family: Arial, sans-serif;
     padding: 20px;
+    background-color: #0079BF;
+    color: #FFFFFF;
   }
   
   #board {
@@ -19,36 +21,24 @@
     background-color: #f4f5f7;
     padding: 20px;
     border-radius: 8px;
+    color: #000000;
   }
 </style>
 </head>
 <body>
 
-<div id="board"></div>
-
-<script>
-  // Simulated data
-  const data = [
-    { name: 'List 6', cards: ['Card 1', 'Card 2'] },
-    { name: 'List 2', cards: ['Card 3', 'Card 4'] }
-  ];
-
-  // Rendering data
-  const board = document.getElementById('board');
-  data.forEach(list => {
-    const listContainer = document.createElement('div');
-    listContainer.classList.add('list');
-    const listTitle = document.createElement('h2');
-    listTitle.textContent = list.name;
-    listContainer.appendChild(listTitle);
-    list.cards.forEach(card => {
-      const cardElement = document.createElement('div');
-      cardElement.textContent = card;
-      listContainer.appendChild(cardElement);
-    });
-    board.appendChild(listContainer);
-  });
-</script>
+<div id="board">
+  <div class="list">
+    <h2>List 1</h2>
+    <div>Card 1</div>
+    <div>Card 2</div>
+  </div>
+  <div class="list">
+    <h2>List 2</h2>
+    <div>Card 3</div>
+    <div>Card 4</div>
+  </div>
+</div>
 
 </body>
 </html>
