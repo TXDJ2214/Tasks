@@ -63,7 +63,14 @@
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
-                                    var cardHtml = '<div class="card"><p>' + card.name + '</p></div>';
+                                    var cardTitle = card.name;
+                                    if (card.labels.length > 0) {
+                                        var labelNames = card.labels.map(function(label) {
+                                            return label.name;
+                                        }).join(', ');
+                                        cardTitle += ' [' + labelNames + ']';
+                                    }
+                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
                                     $('#cards-' + list.id).append(cardHtml);
                                 });
                             });
