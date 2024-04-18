@@ -37,36 +37,18 @@
 </head>
 <body>
 
-<div id="board"></div>
-
-<script>
-  const apiKey = '7d14288264ab0bf23e34850a66e9528e';
-  const token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-  const boardId = '6357540ec8ee600110df8b96';
-
-  fetch(`https://api.trello.com/1/boards/${boardId}/lists?cards=all&key=${apiKey}&token=${token}`)
-    .then(response => response.json())
-    .then(data => {
-      const board = document.getElementById('board');
-      data.forEach(list => {
-        if (list.name !== "PLATOS" && list.name !== "COMPRAS") {
-          const listContainer = document.createElement('div');
-          listContainer.classList.add('list');
-          const listTitle = document.createElement('h2');
-          listTitle.textContent = list.name;
-          listContainer.appendChild(listTitle);
-          list.cards.forEach(card => {
-            const cardElement = document.createElement('div');
-            cardElement.classList.add('card');
-            cardElement.textContent = card.name;
-            listContainer.appendChild(cardElement);
-          });
-          board.appendChild(listContainer);
-        }
-      });
-    })
-    .catch(error => console.error('Error fetching data:', error));
-</script>
+<div id="board">
+  <div class="list">
+    <h2>List 1</h2>
+    <div class="card">Card 1</div>
+    <div class="card">Card 2</div>
+  </div>
+  <div class="list">
+    <h2>List 2</h2>
+    <div class="card">Card 3</div>
+    <div class="card">Card 4</div>
+  </div>
+</div>
 
 </body>
 </html>
