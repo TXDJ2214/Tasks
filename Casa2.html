@@ -6,7 +6,8 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #f4f5f7;
+        background-color: #0079bf; /* Trello blue */
+        color: #172b4d; /* Trello dark gray */
         margin: 0;
         padding: 20px;
     }
@@ -15,7 +16,7 @@
         flex-wrap: wrap;
     }
     .list {
-        background-color: #ebecf0;
+        background-color: #ebecf0; /* Trello light gray */
         border-radius: 3px;
         margin: 0 10px 10px 0;
         padding: 10px;
@@ -24,9 +25,10 @@
     .list h2 {
         font-size: 18px;
         margin: 0 0 10px;
+        color: #172b4d; /* Trello dark gray */
     }
     .card {
-        background-color: #fff;
+        background-color: #ffffff; /* Trello white */
         border-radius: 3px;
         margin-bottom: 5px;
         padding: 5px;
@@ -34,6 +36,7 @@
     .card p {
         font-size: 14px;
         margin: 0;
+        color: #172b4d; /* Trello dark gray */
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -56,15 +59,13 @@
                     data.forEach(function(list){
                         // Exclude lists "COMPRAS" and "PLATOS"
                         if (list.name !== "COMPRAS" && list.name !== "PLATOS") {
-                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
-                            $('#lists').append(listHtml);
+                            $('#lists').append('<h2>' + list.name + '</h2><div id="cards-' + list.id + '"></div>');
 
                             var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
-                                    var cardHtml = '<div class="card"><p>' + card.name + '</p></div>';
-                                    $('#cards-' + list.id).append(cardHtml);
+                                    $('#cards-' + list.id).append('<p>' + card.name + '</p>');
                                 });
                             });
                         }
