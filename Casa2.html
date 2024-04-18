@@ -11,15 +11,14 @@
         padding: 20px;
     }
     #lists {
-        display: flex;
-        flex-wrap: wrap;
+        /* Removed display: flex; and flex-wrap: wrap; */
     }
     .list {
         background-color: #ebecf0;
         border-radius: 3px;
-        margin: 0 10px 10px 0;
+        margin-bottom: 10px;
         padding: 10px;
-        /* Removed width property */
+        width: 100%; /* Set width to 100% */
     }
     .list h2 {
         font-size: 18px;
@@ -84,17 +83,6 @@
 
             // Update every 30 minutes
             setInterval(fetchAndUpdate, 30 * 60 * 1000); // 30 minutes in milliseconds
-
-            // Calculate and set width of .list elements dynamically
-            function setListWidth() {
-                var screenWidth = $(window).width();
-                var listWidth = screenWidth / 2 - 25; // Assuming 10px margin on each side
-                $('.list').css('width', listWidth + 'px');
-            }
-
-            // Call setListWidth initially and on window resize
-            setListWidth();
-            $(window).on('resize', setListWidth);
         });
     </script>
 </body>
