@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trello Board</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -11,29 +10,30 @@
         margin: 0;
         padding: 20px;
     }
-
-    h2 {
-        font-size: 20px;
-        margin-bottom: 10px;
-        color: #172b4d;
+    #lists {
+        display: flex;
+        flex-wrap: wrap;
     }
-
-    p {
-        font-size: 16px;
-        margin-bottom: 5px;
-        color: #172b4d;
-    }
-
-    .list-container {
+    .list {
         background-color: #ebecf0;
         border-radius: 3px;
+        margin: 0 10px 10px 0;
         padding: 10px;
-        margin-bottom: 20px;
+        width: calc(50% - 15px);
     }
-
-    .card-container {
-        margin-left: 20px;
-        margin-top: 10px;
+    .list h2 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .card p {
+        font-size: 14px;
+        margin: 0;
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -56,19 +56,15 @@
                     data.forEach(function(list){
                         // Exclude lists "COMPRAS" and "PLATOS"
                         if (list.name !== "COMPRAS" && list.name !== "PLATOS") {
-                            var listContainer = $('<div class="list-container"></div>');
-                            var title = $('<h2>' + list.name + '</h2>');
-                            var cardContainer = $('<div class="card-container" id="cards-' + list.id + '"></div>');
-
-                            listContainer.append(title);
-                            listContainer.append(cardContainer);
-                            $('#lists').append(listContainer);
+                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
+                            $('#lists').append(listHtml);
 
                             var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
-                                    cardContainer.append('<p>' + card.name + '</p>');
+                                    var cardHtml = '<div class="card"><p>' + card.name + '</p></div>';
+                                    $('#cards-' + list.id).append(cardHtml);
                                 });
                             });
                         }
