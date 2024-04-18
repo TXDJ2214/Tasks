@@ -56,13 +56,15 @@
                     data.forEach(function(list){
                         // Exclude lists "COMPRAS" and "PLATOS"
                         if (list.name !== "COMPRAS" && list.name !== "PLATOS") {
-                            $('#lists').append('<h2>' + list.name + '</h2><div id="cards-' + list.id + '"></div>');
+                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
+                            $('#lists').append(listHtml);
 
                             var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
-                                    $('#cards-' + list.id).append('<p>' + card.name + '</p>');
+                                    var cardHtml = '<div class="card"><p>' + card.name + '</p></div>';
+                                    $('#cards-' + list.id).append(cardHtml);
                                 });
                             });
                         }
