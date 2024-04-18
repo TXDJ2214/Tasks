@@ -1,6 +1,3 @@
-Sure, here's the version you requested:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -65,14 +62,16 @@ Sure, here's the version you requested:
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
                                     var cardTitle = card.name;
-                                    if (card.labels.length > 0) {
-                                        var labelNames = card.labels.map(function(label) {
-                                            return label.name;
-                                        }).join(', ');
-                                        cardTitle += ' [' + labelNames + ']';
+                                    if (cardTitle !== "Lunes" && cardTitle !== "Martes" && cardTitle !== "Miercoles" && cardTitle !== "Jueves" && cardTitle !== "Viernes") {
+                                        if (card.labels.length > 0) {
+                                            var labelNames = card.labels.map(function(label) {
+                                                return label.name;
+                                            }).join(', ');
+                                            cardTitle += ' [' + labelNames + ']';
+                                        }
+                                        var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+                                        $('#cards-' + list.id).append(cardHtml);
                                     }
-                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
-                                    $('#cards-' + list.id).append(cardHtml);
                                 });
                             });
                         }
@@ -89,4 +88,3 @@ Sure, here's the version you requested:
     </script>
 </body>
 </html>
-```
