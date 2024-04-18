@@ -7,26 +7,10 @@
 </head>
 <body>
 
-<div id="board"></div>
-
-<script>
-  // Simulated data
-  const data = [
-    { name: 'List 1', cards: ['Card 1', 'Card 2'] },
-    { name: 'List 2', cards: ['Card 3', 'Card 4'] }
-  ];
-
-  // Rendering data
-  const board = document.getElementById('board');
-  data.forEach(list => {
-    const listContainer = document.createElement('div');
-    listContainer.textContent = list.name + ': ';
-    list.cards.forEach((card, index) => {
-      listContainer.textContent += (index !== 0 ? ', ' : '') + card;
-    });
-    board.appendChild(listContainer);
-  });
-</script>
+<div id="board">
+  <div>List 1: Card 1, Card 2</div>
+  <div>List 2: Card 3, Card 4</div>
+</div>
 
 </body>
 </html>
