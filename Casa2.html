@@ -4,12 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Trello Board</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  
+  #board {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .list {
+    background-color: #f4f5f7;
+    padding: 20px;
+    border-radius: 8px;
+  }
+</style>
 </head>
 <body>
 
 <div id="board">
-  <div>List 1: Card 1, Card 2</div>
-  <div>List 2: Card 3, Card 4</div>
+  <div class="list">
+    <h2>List 2</h2>
+    <div>Card 1</div>
+    <div>Card 2</div>
+  </div>
+  <div class="list">
+    <h2>List 2</h2>
+    <div>Card 3</div>
+    <div>Card 4</div>
+  </div>
 </div>
 
 </body>
