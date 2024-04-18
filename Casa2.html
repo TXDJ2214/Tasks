@@ -4,51 +4,52 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Trello Board</title>
+<style>
+  .list {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .card {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 5px;
+  }
+</style>
 </head>
 <body>
 
-<h1>Trello Board</h1>
-
-<div id="lists"></div>
+<div id="board"></div>
 
 <script>
-    const trelloApiKey = '7d14288264ab0bf23e34850a66e9528e';
-    const trelloToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-    const trelloBoardId = '6357540ec8ee600110df8b96';
+  const apiKey = '7d14288264ab0bf23e34850a66e9528e';
+  const token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+  const boardId = '6357540ec8ee600110df8b96';
 
-    // Function to fetch data from Trello API
-    async function fetchData() {
-        const response = await fetch(`https://api.trello.com/1/boards/${trelloBoardId}?key=${trelloApiKey}&token=${trelloToken}&lists=all&cards=all`);
-        const data = await response.json();
-        return data;
-    }
-
-    // Function to render lists and cards
-    async function renderData() {
-        const boardData = await fetchData();
-        const lists = boardData.lists;
-
-        const listsContainer = document.getElementById('lists');
-
-        lists.forEach(list => {
-            const listElement = document.createElement('div');
-            listElement.innerHTML = `<h2>${list.name}</h2>`;
-            
-            const cardsContainer = document.createElement('div');
-
-            list.cards.forEach(card => {
-                const cardElement = document.createElement('div');
-                cardElement.textContent = card.name;
-                cardsContainer.appendChild(cardElement);
-            });
-
-            listElement.appendChild(cardsContainer);
-            listsContainer.appendChild(listElement);
+  // Fetch all lists and cards of the board
+  fetch(`https://api.trello.com/1/boards/${boardId}/lists?cards=all&key=${apiKey}&token=${token}`)
+    .then(response => response.json())
+    .then(data => {
+      const board = document.getElementById('board');
+      data.forEach(list => {
+        const listContainer = document.createElement('div');
+        listContainer.classList.add('list');
+        const listTitle = document.createElement('h2');
+        listTitle.textContent = list.name;
+        listContainer.appendChild(listTitle);
+        list.cards.forEach(card => {
+          const cardElement = document.createElement('div');
+          cardElement.classList.add('card');
+          cardElement.textContent = card.name;
+          listContainer.appendChild(cardElement);
         });
-    }
-
-    // Call the renderData function when the page loads
-    window.onload = renderData;
+        board.appendChild(listContainer);
+      });
+    })
+    .catch(error => console.error('Error fetching data:', error));
 </script>
 
 </body>
