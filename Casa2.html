@@ -1,3 +1,6 @@
+To append the label name to each card title between square brackets, you can modify the code inside the `fetchAndUpdate` function to include the label name in the card title. Here's the updated code:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,16 +9,13 @@
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #0079bf; /* Blue background color */
+        background-color: #f4f5f7;
         margin: 0;
         padding: 20px;
-        display: flex;
-        justify-content: center;
     }
     #lists {
         display: flex;
         flex-wrap: wrap;
-        max-width: 1600px; /* Adjust max-width as needed */
     }
     .list {
         background-color: #ebecf0;
@@ -66,14 +66,11 @@
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
-                                    var cardTitle = card.name;
+                                    var labelName = '';
                                     if (card.labels.length > 0) {
-                                        var labelNames = card.labels.map(function(label) {
-                                            return label.name;
-                                        }).join(', ');
-                                        cardTitle += ' [' + labelNames + ']';
+                                        labelName = '[' + card.labels[0].name + '] ';
                                     }
-                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+                                    var cardHtml = '<div class="card"><p>' + labelName + card.name + '</p></div>';
                                     $('#cards-' + list.id).append(cardHtml);
                                 });
                             });
@@ -91,3 +88,6 @@
     </script>
 </body>
 </html>
+```
+
+This code checks if each card has labels associated with it. If it does, it appends the label name to the card title between square brackets. If there are no labels, it simply appends the card title without any modification.
