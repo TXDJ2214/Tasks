@@ -11,14 +11,12 @@
         padding: 20px;
     }
     #lists {
-        /* Removed display: flex; and flex-wrap: wrap; */
     }
     .list {
         background-color: #ebecf0;
         border-radius: 3px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         padding: 10px;
-        width: 100%; /* Set width to 100% */
     }
     .list h2 {
         font-size: 18px;
@@ -27,12 +25,19 @@
     .card {
         background-color: #fff;
         border-radius: 3px;
-        margin-bottom: 5px;
-        padding: 5px;
+        margin-bottom: 10px;
+        padding: 10px;
     }
     .card p {
         font-size: 14px;
         margin: 0;
+    }
+    .label {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        margin-right: 5px;
+        border-radius: 2px;
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -64,10 +69,9 @@
                                 cards.forEach(function(card){
                                     var cardTitle = card.name;
                                     if (card.labels.length > 0) {
-                                        var labelNames = card.labels.map(function(label) {
-                                            return label.name;
-                                        }).join(', ');
-                                        cardTitle += ' [' + labelNames + ']';
+                                        card.labels.forEach(function(label) {
+                                            cardTitle = '<div class="label" style="background-color: #' + label.color + ';"></div>' + cardTitle;
+                                        });
                                     }
                                     var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
                                     $('#cards-' + list.id).append(cardHtml);
