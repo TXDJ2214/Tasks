@@ -19,7 +19,7 @@
         border-radius: 3px;
         margin: 0 10px 10px 0;
         padding: 10px;
-        width: 800px; /* Set fixed width to 800px */
+        /* Removed width property */
     }
     .list h2 {
         font-size: 18px;
@@ -84,6 +84,17 @@
 
             // Update every 30 minutes
             setInterval(fetchAndUpdate, 30 * 60 * 1000); // 30 minutes in milliseconds
+
+            // Calculate and set width of .list elements dynamically
+            function setListWidth() {
+                var screenWidth = $(window).width();
+                var listWidth = screenWidth / 2 - 25; // Assuming 10px margin on each side
+                $('.list').css('width', listWidth + 'px');
+            }
+
+            // Call setListWidth initially and on window resize
+            setListWidth();
+            $(window).on('resize', setListWidth);
         });
     </script>
 </body>
