@@ -1,3 +1,6 @@
+Sure, here's the version you requested:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +18,9 @@
     .list {
         background-color: #ebecf0;
         border-radius: 3px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         padding: 10px;
+        width: 100%; /* Set width to 100% */
     }
     .list h2 {
         font-size: 18px;
@@ -25,22 +29,12 @@
     .card {
         background-color: #fff;
         border-radius: 3px;
-        margin-bottom: 10px;
-        padding: 10px;
+        margin-bottom: 5px;
+        padding: 5px;
     }
     .card p {
         font-size: 14px;
         margin: 0;
-    }
-    .label {
-        display: inline-block;
-        width: 10px;
-        height: 10px;
-        margin-right: 5px;
-        border-radius: 2px;
-    }
-    .label strong {
-        font-weight: bold;
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -72,9 +66,10 @@
                                 cards.forEach(function(card){
                                     var cardTitle = card.name;
                                     if (card.labels.length > 0) {
-                                        card.labels.forEach(function(label) {
-                                            cardTitle = '<div class="label" style="background-color: #' + label.color + ';"><strong>' + label.name + '</strong></div>' + cardTitle;
-                                        });
+                                        var labelNames = card.labels.map(function(label) {
+                                            return label.name;
+                                        }).join(', ');
+                                        cardTitle += ' [' + labelNames + ']';
                                     }
                                     var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
                                     $('#cards-' + list.id).append(cardHtml);
@@ -94,3 +89,4 @@
     </script>
 </body>
 </html>
+```
