@@ -24,18 +24,31 @@
 </head>
 <body>
 
-<div id="board">
-  <div class="list">
-    <h2>List 2</h2>
-    <div>Card 1</div>
-    <div>Card 2</div>
-  </div>
-  <div class="list">
-    <h2>List 2</h2>
-    <div>Card 3</div>
-    <div>Card 4</div>
-  </div>
-</div>
+<div id="board"></div>
+
+<script>
+  // Simulated data
+  const data = [
+    { name: 'List 6', cards: ['Card 1', 'Card 2'] },
+    { name: 'List 2', cards: ['Card 3', 'Card 4'] }
+  ];
+
+  // Rendering data
+  const board = document.getElementById('board');
+  data.forEach(list => {
+    const listContainer = document.createElement('div');
+    listContainer.classList.add('list');
+    const listTitle = document.createElement('h2');
+    listTitle.textContent = list.name;
+    listContainer.appendChild(listTitle);
+    list.cards.forEach(card => {
+      const cardElement = document.createElement('div');
+      cardElement.textContent = card;
+      listContainer.appendChild(cardElement);
+    });
+    board.appendChild(listContainer);
+  });
+</script>
 
 </body>
 </html>
