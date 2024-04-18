@@ -35,18 +35,21 @@
     .then(data => {
       const board = document.getElementById('board');
       data.forEach(list => {
-        const listContainer = document.createElement('div');
-        listContainer.classList.add('list');
-        const listTitle = document.createElement('h2');
-        listTitle.textContent = list.name;
-        listContainer.appendChild(listTitle);
-        list.cards.forEach(card => {
-          const cardElement = document.createElement('div');
-          cardElement.classList.add('card');
-          cardElement.textContent = card.name;
-          listContainer.appendChild(cardElement);
-        });
-        board.appendChild(listContainer);
+        // Check if the list name is not "PLATOS" or "COMPRAS"
+        if (list.name !== "PLATOS" && list.name !== "COMPRAS") {
+          const listContainer = document.createElement('div');
+          listContainer.classList.add('list');
+          const listTitle = document.createElement('h2');
+          listTitle.textContent = list.name;
+          listContainer.appendChild(listTitle);
+          list.cards.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.textContent = card.name;
+            listContainer.appendChild(cardElement);
+          });
+          board.appendChild(listContainer);
+        }
       });
     })
     .catch(error => console.error('Error fetching data:', error));
