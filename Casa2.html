@@ -2,43 +2,58 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trello Board</title>
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    background-color: #0079BF;
-    color: #FFFFFF;
-  }
-  
-  #board {
-    display: flex;
-    gap: 20px;
-  }
-  
   .list {
-    background-color: #f4f5f7;
-    padding: 20px;
-    border-radius: 8px;
-    color: #000000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  .card {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 5px;
+    margin-bottom: 5px;
   }
 </style>
 </head>
 <body>
 
-<div id="board">
-  <div class="list">
-    <h2>List 11</h2>
-    <div>Card 1</div>
-    <div>Card 2</div>
-  </div>
-  <div class="list">
-    <h2>List 2</h2>
-    <div>Card 3</div>
-    <div>Card 4</div>
-  </div>
-</div>
+<div id="board"></div>
+
+<script>
+  const apiKey = '7d14288264ab0bf23e34850a66e9528e';
+  const token = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+  const boardId = '6357540ec8ee600110df8b96';
+
+  // Fetch all lists and cards of the board
+  fetch(`https://api.trello.com/1/boards/${boardId}/lists?cards=all&key=${apiKey}&token=${token}`)
+    .then(response => response.json())
+    .then(data => {
+      const board = document.getElementById('board');
+      data.forEach(list => {
+        // Exclude lists named "PLATOS" or "COMPRAS"
+        if (list.name !== 'PLATOS' && list.name !== 'COMPRAS') {
+          const listContainer = document.createElement('div');
+          listContainer.classList.add('list');
+          const listTitle = document.createElement('h2');
+          listTitle.textContent = list.name;
+          listContainer.appendChild(listTitle);
+          list.cards.forEach(card => {
+            const cardElement = document.createElement('div');
+            cardElement.classList.add('card');
+            cardElement.textContent = card.name;
+            listContainer.appendChild(cardElement);
+          });
+          board.appendChild(listContainer);
+        }
+      });
+    })
+    .catch(error => console.error('Error fetching data:', error));
+</script>
 
 </body>
 </html>
