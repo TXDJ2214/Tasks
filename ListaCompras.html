@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+</head>
+<body>
+    <h1>My Shopping List</h1>
+    <form id="shopping-list">
+        <ul id="item-list">
+            <!-- Items will be populated here -->
+        </ul>
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch the text file
+            fetch('shopping_items.txt')
+            .then(response => response.text())
+            .then(data => {
+                const items = data.split('\n'); // Split the text by new line to get individual items
+                
+                const itemList = document.getElementById('item-list');
+                
+                // Loop through each item and create a list item with a checkbox
+                items.forEach((item, index) => {
+                    const li = document.createElement('li');
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = `item${index + 1}`;
+                    checkbox.name = `item${index + 1}`;
+                    const label = document.createElement('label');
+                    label.setAttribute('for', `item${index + 1}`);
+                    label.textContent = item.trim(); // Trim to remove leading/trailing whitespace
+                    
+                    li.appendChild(checkbox);
+                    li.appendChild(label);
+                    itemList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+        });
+    </script>
+</body>
+</html>
