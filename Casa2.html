@@ -53,7 +53,7 @@
 
                     data.forEach(function(list){
                         // Exclude lists "COMPRAS" and "PLATOS"
-                        if (list.name !== "COMPRAS" && list.name !== "PLATOS")  && list.name !== "INGREDIENTES")  {
+                        if (list.name !== "COMPRAS" && list.name !== "PLATOS"){
                             var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
                             $('#lists').append(listHtml);
 
