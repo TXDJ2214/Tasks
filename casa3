@@ -87,9 +87,18 @@
                             });
                         }
                     });
+
+                    // Append the spreadsheet iframe after the last list
+                    appendSpreadsheetIframe();
                 }).fail(function() {
                     console.error("Failed to fetch data from Trello API.");
                 });
+            }
+
+            // Function to append the iframe after the last list
+            function appendSpreadsheetIframe() {
+                var iframeHtml = '<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vQnnvh8Ac0x-EtKCiTtDzMHGjyv2lltLQQFAUy-EGz4LHp-qJUyYheHAX9tvFN8YVaQbFqUoDUSFrUr/pubhtml?gid=1386834576&amp;single=true&amp;widget=true&amp;headers=false"></iframe>';
+                $('#lists').append(iframeHtml);
             }
 
             // Initial fetch and update
