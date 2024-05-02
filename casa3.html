@@ -45,9 +45,35 @@
 
     <script>
         $(document).ready(function(){
-            var trelloApiKey = '7d14288264ab0bf23e34850a66e9528e';
-            var trelloToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
-            var trelloBoardId = '6357540ec8ee600110df8b96';
+            var trelloApiKey = 'YOUR_TRELLO_API_KEY';
+            var trelloToken = 'YOUR_TRELLO_TOKEN';
+            var trelloBoardId = 'YOUR_TRELLO_BOARD_ID';
+            var comprasListId = 'ID_OF_COMPRAS_LIST_IN_TRELLO';
+            var listaListId = 'ID_OF_LISTA_LIST_IN_TRELLO';
+
+            function moveCardToCompras(cardId) {
+                $.ajax({
+                    type: 'PUT',
+                    url: 'https://api.trello.com/1/cards/' + cardId + '/idList',
+                    data: {
+                        value: comprasListId,
+                        key: trelloApiKey,
+                        token: trelloToken
+                    }
+                });
+            }
+
+            function moveCardToLista(cardId) {
+                $.ajax({
+                    type: 'PUT',
+                    url: 'https://api.trello.com/1/cards/' + cardId + '/idList',
+                    data: {
+                        value: listaListId,
+                        key: trelloApiKey,
+                        token: trelloToken
+                    }
+                });
+            }
 
             function fetchAndUpdate() {
                 var url = 'https://api.trello.com/1/boards/' + trelloBoardId + '/lists?key=' + trelloApiKey + '&token=' + trelloToken;
@@ -78,6 +104,16 @@
 
                                     var cardHtml = '<div class="card"><input type="checkbox" class="checkbox" ' + checkedAttr + '><p>' + cardTitle + '</p></div>';
                                     $('#cards-lista-de-compras').append(cardHtml);
+                                    
+                                    // Checkbox event listener
+                                    $('.checkbox').change(function() {
+                                        var cardId = $(this).closest('.card').attr('data-card-id');
+                                        if ($(this).prop('checked')) {
+                                            moveCardToCompras(cardId);
+                                        } else {
+                                            moveCardToLista(cardId);
+                                        }
+                                    });
                                 });
                             });
                         } else {
