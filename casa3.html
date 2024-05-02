@@ -72,6 +72,25 @@
                                     $('#cards-lista-de-compras').append(cardHtml);
                                 });
                             });
+                        } else {
+                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
+                            $('#lists').append(listHtml);
+
+                            var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
+
+                            $.get(cardsUrl, function(cards){
+                                cards.forEach(function(card){
+                                    var cardTitle = card.name;
+                                    if (card.labels.length > 0) {
+                                        var labelNames = card.labels.map(function(label) {
+                                            return label.name;
+                                        }).join(', ');
+                                        cardTitle += ' [' + labelNames + ']';
+                                    }
+                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+                                    $('#cards-' + list.id).append(cardHtml);
+                                });
+                            });
                         }
                     });
                 });
