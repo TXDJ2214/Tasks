@@ -45,11 +45,11 @@
 
     <script>
         $(document).ready(function(){
-            var trelloApiKey = 'YOUR_TRELLO_API_KEY';
-            var trelloToken = 'YOUR_TRELLO_TOKEN';
-            var trelloBoardId = 'YOUR_TRELLO_BOARD_ID';
-            var comprasListId = 'ID_OF_COMPRAS_LIST_IN_TRELLO';
-            var listaListId = 'ID_OF_LISTA_LIST_IN_TRELLO';
+            var trelloApiKey = '7d14288264ab0bf23e34850a66e9528e';
+            var trelloToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+            var trelloBoardId = '6357540ec8ee600110df8b96';
+            var comprasListId = '66283579a10a02bbeb215a95'; // Actual ID of the "COMPRAS" list in Trello
+            var listaListId = '6628374c8c8710d8d198a67c'; // Actual ID of the "LISTA" list in Trello
 
             function moveCardToCompras(cardId) {
                 $.ajax({
@@ -139,7 +139,7 @@
                     });
                 });
             }
-
+            
             // Initial fetch and update
             fetchAndUpdate();
 
