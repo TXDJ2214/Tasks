@@ -51,27 +51,25 @@
                 $.get(url, function(data){
                     $('#lists').empty(); // Clear previous content
 
-                    data.forEach(function(list){
-                        // Exclude lists "COMPRAS" and "PLATOS"
-                        if (list.name !== "COMPRAS" && list.name !== "PLATOS") {
-                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
-                            $('#lists').append(listHtml);
+                    var listaDeComprasHtml = '<div class="list"><h2>LISTA DE COMPRAS</h2><div id="cards-lista-de-compras" class="cards"></div></div>';
 
+                    $('#lists').append(listaDeComprasHtml);
+
+                    data.forEach(function(list){
+                        if (list.name === "COMPRAS" || list.name === "LISTA") {
                             var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
 
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
                                     var cardTitle = card.name;
-                                    if (cardTitle !== "Lunes" && cardTitle !== "Martes" && cardTitle !== "Miercoles" && cardTitle !== "Jueves" && cardTitle !== "Viernes") {
-                                        if (card.labels.length > 0) {
-                                            var labelNames = card.labels.map(function(label) {
-                                                return label.name;
-                                            }).join(', ');
-                                            cardTitle += ' [' + labelNames + ']';
-                                        }
-                                        var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
-                                        $('#cards-' + list.id).append(cardHtml);
+                                    if (card.labels.length > 0) {
+                                        var labelNames = card.labels.map(function(label) {
+                                            return label.name;
+                                        }).join(', ');
+                                        cardTitle += ' [' + labelNames + ']';
                                     }
+                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+                                    $('#cards-lista-de-compras').append(cardHtml);
                                 });
                             });
                         }
