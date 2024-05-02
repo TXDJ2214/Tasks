@@ -33,6 +33,9 @@
         font-size: 14px;
         margin: 0;
     }
+    .checkbox {
+        margin-right: 5px;
+    }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -62,13 +65,17 @@
                             $.get(cardsUrl, function(cards){
                                 cards.forEach(function(card){
                                     var cardTitle = card.name;
+                                    var isChecked = (list.name === "COMPRAS"); // Check if card is from "COMPRAS" list
+                                    var checkedAttr = isChecked ? 'checked' : ''; // Set checked attribute for checkbox
+
                                     if (card.labels.length > 0) {
                                         var labelNames = card.labels.map(function(label) {
                                             return label.name;
                                         }).join(', ');
                                         cardTitle += ' [' + labelNames + ']';
                                     }
-                                    var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+
+                                    var cardHtml = '<div class="card"><input type="checkbox" class="checkbox" ' + checkedAttr + '><p>' + cardTitle + '</p></div>';
                                     $('#cards-lista-de-compras').append(cardHtml);
                                 });
                             });
