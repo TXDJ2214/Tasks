@@ -38,7 +38,64 @@
         padding: 20px;
         background-color: #0079bf;
     }
+
+    /* Modal styling */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+    }
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+    .close:hover, .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Styles for lists and cards */
+    .list {
+        background-color: #ebecf0;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 98%; /* Set width to 98% */
+    }
+    .list h2 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .card p {
+        font-size: 14px;
+        margin: 0;
+    }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -52,8 +109,17 @@
 </div>
 
 <div id="Compras" class="tabcontent">
-    <p>Click the link below to open your shopping list:</p>
+    <button id="openModalBtn">Open Shopping List</button>
+</div>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>To view the shopping list, please click the link below:</p>
     <a href="https://www.icloud.com/notes/0d3GmASXyv0bFMn4ews22hESw#Lista_Compras" target="_blank">Open Shopping List</a>
+    <p>You can also copy the link or email it to yourself for easy access.</p>
+  </div>
 </div>
 
 <script>
@@ -74,8 +140,27 @@ function openTab(evt, tabName) {
 // Get the element with id="defaultOpen" and click on it to open the default tab
 document.getElementById("defaultOpen").click();
 
+// Modal logic
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("openModalBtn");
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 // Insert your "Tareas" tab content here
-document.addEventListener('DOMContentLoaded', function(){
+$(document).ready(function(){
     var trelloApiKey = '7d14288264ab0bf23e34850a66e9528e';
     var trelloToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
     var trelloBoardId = '6357540ec8ee600110df8b96';
@@ -108,9 +193,13 @@ document.addEventListener('DOMContentLoaded', function(){
                                 $('#cards-' + list.id).append(cardHtml);
                             }
                         });
+                    }).fail(function() {
+                        console.error('Failed to fetch cards for list: ' + list.name);
                     });
                 }
             });
+        }).fail(function() {
+            console.error('Failed to fetch lists from Trello board.');
         });
     }
 
