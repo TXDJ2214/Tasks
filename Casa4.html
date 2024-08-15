@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from tkinter import Text
+import webbrowser
 
 # Create the main window
 root = tk.Tk()
@@ -19,23 +19,123 @@ notebook.add(tareas_frame, text='Tareas')
 notebook.add(compras_frame, text='Compras')
 
 # "Tareas" Tab Content
-# Replace the below Text widget with your code logic
-tareas_text = Text(tareas_frame)
-tareas_text.insert('1.0', 'Your code here...')
-tareas_text.pack(fill='both', expand=True)
+# Create a label with the embed instruction
+tareas_label = tk.Label(tareas_frame, text='Click here to open Tareas in your browser', fg='blue', cursor='hand2')
+tareas_label.pack(pady=10)
+
+# Define a function to open the HTML content in the browser
+def open_tareas(event):
+    html_content = '''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0079bf; /* Blue background color */
+        margin: 0;
+        padding: 20px;
+    }
+    #lists {
+    }
+    .list {
+        background-color: #ebecf0;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 98%; /* Set width to 100% */
+    }
+    .list h2 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .card p {
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="lists"></div>
+
+    <script>
+        $(document).ready(function(){
+            var trelloApiKey = '7d14288264ab0bf23e34850a66e9528e';
+            var trelloToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+            var trelloBoardId = '6357540ec8ee600110df8b96';
+
+            function fetchAndUpdate() {
+                var url = 'https://api.trello.com/1/boards/' + trelloBoardId + '/lists?key=' + trelloApiKey + '&token=' + trelloToken;
+
+                $.get(url, function(data){
+                    $('#lists').empty(); // Clear previous content
+
+                    data.forEach(function(list){
+                        // Exclude lists "COMPRAS" and "PLATOS"
+                        if (list.name !== "COMPRAS" && list.name !== "PLATOS"){
+                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
+                            $('#lists').append(listHtml);
+
+                            var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
+
+                            $.get(cardsUrl, function(cards){
+                                cards.forEach(function(card){
+                                    var cardTitle = card.name;
+                                    if (cardTitle !== "Lunes" && cardTitle !== "Martes" && cardTitle !== "Miercoles" && cardTitle !== "Jueves" && cardTitle !== "Viernes") {
+                                        if (card.labels.length > 0) {
+                                            var labelNames = card.labels.map(function(label) {
+                                                return label.name;
+                                            }).join(', ');
+                                            cardTitle += ' [' + labelNames + ']';
+                                        }
+                                        var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+                                        $('#cards-' + list.id).append(cardHtml);
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Initial fetch and update
+            fetchAndUpdate();
+
+            // Update every 30 minutes
+            setInterval(fetchAndUpdate, 30 * 60 * 1000); // 30 minutes in milliseconds
+        });
+    </script>
+</body>
+</html>'''
+    # Save the HTML content to a temporary file
+    with open("tareas.html", "w") as file:
+        file.write(html_content)
+    
+    # Open the HTML file in the default web browser
+    webbrowser.open_new("tareas.html")
+
+# Bind the label to the open_tareas function
+tareas_label.bind("<Button-1>", open_tareas)
 
 # "Compras" Tab Content
 # Create a label with the embed instruction
-compras_label = tk.Label(compras_frame, text='Visit the following link to view your shopping list:', fg='blue', cursor='hand2')
+compras_label = tk.Label(compras_frame, text='Click here to open your shopping list', fg='blue', cursor='hand2')
 compras_label.pack(pady=10)
 
 # Define a function to open the link in the browser
-def open_link(event):
-    import webbrowser
+def open_compras(event):
     webbrowser.open_new("https://www.icloud.com/notes/0d3GmASXyv0bFMn4ews22hESw#Lista_Compras")
 
 # Bind the label to the open_link function
-compras_label.bind("<Button-1>", open_link)
+compras_label.bind("<Button-1>", open_compras)
 
 # Run the main application loop
 root.mainloop()
