@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #0079bf; /* Blue background color */
+        margin: 0;
+        padding: 20px;
+    }
+    #lists {
+    }
+    .list {
+        background-color: #ebecf0;
+        border-radius: 3px;
+        margin-bottom: 10px;
+        padding: 10px;
+        width: 98%; /* Set width to 100% */
+    }
+    .list h2 {
+        font-size: 18px;
+        margin: 0 0 10px;
+    }
+    .card {
+        background-color: #fff;
+        border-radius: 3px;
+        margin-bottom: 5px;
+        padding: 5px;
+    }
+    .card p {
+        font-size: 14px;
+        margin: 0;
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="lists"></div>
+
+    <script>
+        $(document).ready(function(){
+            var trelloApiKey = '7d14288264ab0bf23e34850a66e9528e';
+            var trelloToken = 'ATTAc4e9eee205f99466cbe7b9e67bdc03db64e48cb1723aabc8ad5bdb9cecbbffc5D4FB9F69';
+            var trelloBoardId = '6357540ec8ee600110df8b96';
+
+            function fetchAndUpdate() {
+                var url = 'https://api.trello.com/1/boards/' + trelloBoardId + '/lists?key=' + trelloApiKey + '&token=' + trelloToken;
+
+                $.get(url, function(data){
+                    $('#lists').empty(); // Clear previous content
+
+                    data.forEach(function(list){
+                        // Exclude lists "COMPRAS" and "PLATOS"
+                        if (list.name !== "COMPRAS" && list.name !== "PLATOS"){
+                            var listHtml = '<div class="list"><h2>' + list.name + '</h2><div id="cards-' + list.id + '" class="cards"></div></div>';
+                            $('#lists').append(listHtml);
+
+                            var cardsUrl = 'https://api.trello.com/1/lists/' + list.id + '/cards?key=' + trelloApiKey + '&token=' + trelloToken;
+
+                            $.get(cardsUrl, function(cards){
+                                cards.forEach(function(card){
+                                    var cardTitle = card.name;
+                                    if (cardTitle !== "Lunes" && cardTitle !== "Martes" && cardTitle !== "Miercoles" && cardTitle !== "Jueves" && cardTitle !== "Viernes") {
+                                        if (card.labels.length > 0) {
+                                            var labelNames = card.labels.map(function(label) {
+                                                return label.name;
+                                            }).join(', ');
+                                            cardTitle += ' [' + labelNames + ']';
+                                        }
+                                        var cardHtml = '<div class="card"><p>' + cardTitle + '</p></div>';
+                                        $('#cards-' + list.id).append(cardHtml);
+                                    }
+                                });
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Initial fetch and update
+            fetchAndUpdate();
+
+            // Update every 30 minutes
+            setInterval(fetchAndUpdate, 30 * 60 * 1000); // 30 minutes in milliseconds
+        });
+    </script>
+</body>
+</html>
