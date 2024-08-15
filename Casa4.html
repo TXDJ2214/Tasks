@@ -1,0 +1,41 @@
+import tkinter as tk
+from tkinter import ttk
+from tkinter import Text
+
+# Create the main window
+root = tk.Tk()
+root.title("My App")
+
+# Create a notebook (tab holder)
+notebook = ttk.Notebook(root)
+notebook.pack(fill='both', expand=True)
+
+# Create frames for the two tabs
+tareas_frame = ttk.Frame(notebook)
+compras_frame = ttk.Frame(notebook)
+
+# Add the frames to the notebook with the titles 'Tareas' and 'Compras'
+notebook.add(tareas_frame, text='Tareas')
+notebook.add(compras_frame, text='Compras')
+
+# "Tareas" Tab Content
+# Replace the below Text widget with your code logic
+tareas_text = Text(tareas_frame)
+tareas_text.insert('1.0', 'Your code here...')
+tareas_text.pack(fill='both', expand=True)
+
+# "Compras" Tab Content
+# Create a label with the embed instruction
+compras_label = tk.Label(compras_frame, text='Visit the following link to view your shopping list:', fg='blue', cursor='hand2')
+compras_label.pack(pady=10)
+
+# Define a function to open the link in the browser
+def open_link(event):
+    import webbrowser
+    webbrowser.open_new("https://www.icloud.com/notes/0d3GmASXyv0bFMn4ews22hESw#Lista_Compras")
+
+# Bind the label to the open_link function
+compras_label.bind("<Button-1>", open_link)
+
+# Run the main application loop
+root.mainloop()
