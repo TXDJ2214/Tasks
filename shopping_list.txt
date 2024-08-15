@@ -1,0 +1,5 @@
+{
+  "Vegetables": ["Carrots", "Broccoli", "Lettuce"],
+  "Fruits": ["Apples", "Bananas", "Oranges"],
+  "Dairy": ["Milk", "Cheese", "Yogurt"]
+}
